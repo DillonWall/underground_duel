@@ -1,8 +1,3 @@
-import { Chicken } from "./chicken"
+import { Game } from "./game/game.js"
 
-console.log("test")
-
-// const url = URL
-
-const chicken = new Chicken()
-chicken.cluck()
+new Game()

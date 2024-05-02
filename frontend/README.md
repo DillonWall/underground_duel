@@ -1,18 +1,15 @@
 # Underground Duel - Frontend
 
-## Setting up a typescript project
+## Setting up a typescript project with node.js
 
 ### First time
-- Use node.js .gitignore
-- `npm install -g typescript`
-- `tsc --init --sourceMap --rootDir src --outDir dist`
+- Use node.js .gitignore from GitHub
+- `npm i -D typescript`
 - Create 'src' directory
-- Create index.ts in 'src' directory
-- Create a launch.json file (node.js) (from the vscode Run and Debug menu)
-    - Change program field to `"program": "${workspaceFolder}/dist/index.js"`
-- `npm i --save-dev typescript`
-- Press F1 and run 'Tasks: Configure Default Build Task'
-    - 'tsc: watch - tsconfig.json'
+- Create index.ts and index.html in 'src' directory
+- Copy the tsconfig.json from this project or otherwise run `tsc --init --sourceMap --rootDir src --outDir public/js`
+- Copy this project's package.json
+- Run `npm i`
 
-### Each time launching vscode
-- Ctrl+Shift+B (or Press F1 and run 'Tasks: Run Build Task')
+### Development
+- `npm run start`

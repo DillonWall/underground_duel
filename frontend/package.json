@@ -1,14 +1,23 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Dillon Wall",
-  "license": "ISC",
-  "devDependencies": {
-    "typescript": "^5.4.5"
-  }
+	"name": "frontend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "public/js/index.js",
+	"type": "module",
+	"scripts": {
+		"clean": "rimraf public/js/",
+		"build": "npm run clean && copyfiles -u 1 src/**/*.html src/**/*.css public/js/ && tsc",
+		"liveserver": "live-server --open=public/index.html --watch=public/",
+		"tsc-watch": "tsc --watch",
+		"start": "npm run build && concurrently --kill-others \"npm:liveserver\" \"npm:tsc-watch\""
+	},
+	"author": "Dillon Wall",
+	"license": "ISC",
+	"devDependencies": {
+		"concurrently": "^8.2.2",
+		"copyfiles": "^2.4.1",
+		"live-server": "^1.2.2",
+		"rimraf": "^5.0.5",
+		"typescript": "^5.4.5"
+	}
 }
