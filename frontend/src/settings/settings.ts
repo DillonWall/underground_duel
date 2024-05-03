@@ -1,5 +1,6 @@
 export const Settings = Object.freeze({
 	debug: {
+		enabled: false,
 		showFps: true,
 		showGrid: false,
 	},

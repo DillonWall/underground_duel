@@ -3,7 +3,7 @@ import { Tilemap } from "./tilemap/tilemap.js"
 
 export class Game extends Entity {
 	private _lastTimestamp = 0
-	private _entities: Entity[]
+	private _entities: Entity[] = []
 	// private readonly _stateMachina = new GameStateMachina(this)
 
 	public get entities(): Entity[] {
@@ -16,9 +16,11 @@ export class Game extends Entity {
 		this._entities.push(new Tilemap())
 	}
 
-	public Awake(): void {
+	public awake(): void {
 		// this.addComponent(new GameInputComponent())
 		// this.addComponent(new StartGameUI(document.body))
+
+		console.log("Awake")
 
 		super.awake()
 

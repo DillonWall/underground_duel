@@ -51,6 +51,13 @@ export class Canvas implements IAwake {
 		}
 	}
 
+	public fillRect(start: Vector2D, size: Vector2D, color: Color): void {
+		this._ctx.beginPath()
+		this._ctx.fillStyle = color.toString()
+		this._ctx.rect(start.x, start.y, size.x, size.y)
+		this._ctx.fill()
+	}
+
 	public clearRect(start: Vector2D, size: Vector2D): void {
 		this._ctx.clearRect(start.x, start.y, size.x, size.y)
 	}

@@ -35,6 +35,12 @@ export class Canvas {
             this._elm.style[key] = style[key];
         }
     }
+    fillRect(start, size, color) {
+        this._ctx.beginPath();
+        this._ctx.fillStyle = color.toString();
+        this._ctx.rect(start.x, start.y, size.x, size.y);
+        this._ctx.fill();
+    }
     clearRect(start, size) {
         this._ctx.clearRect(start.x, start.y, size.x, size.y);
     }

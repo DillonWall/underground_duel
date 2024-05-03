@@ -6,6 +6,7 @@ export class Entity {
         this._components = [];
     }
     awake() {
+        // console.log(`Entity ${this.constructor.name} awake`)
         this._components.forEach((component) => {
             component.awake();
         });

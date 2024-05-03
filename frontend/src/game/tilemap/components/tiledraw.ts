@@ -1,17 +1,32 @@
+import { Settings } from "../../../settings/settings.js"
+import { CanvasLayer } from "../../../utils/canvas/canvas_layer.js"
+import { Color } from "../../../utils/color/color.js"
 import { IComponent } from "../../../utils/ecs/component.js"
-import { Entity } from "../../../utils/ecs/entity.js"
+import { Tile } from "../tile.js"
 
 export class TileDrawComponent implements IComponent {
-	public entity: Entity
+	entity: Tile
 
-	constructor(entity: Entity) {
+	constructor(entity: Tile) {
 		this.entity = entity
 	}
 
+	awake(): void {}
+
 	update(deltaTime: number): void {
-		throw new Error("Method not implemented.")
+		this.draw()
+		this.drawDebugInfo()
 	}
-	awake(): void {
-		throw new Error("Method not implemented.")
+
+	private draw(): void {
+		CanvasLayer.layers[0].fillRect(this.entity.loc, this.entity.size, new Color(0, 255, 0, 1))
+	}
+
+	private drawDebugInfo(): void {
+		if (!Settings.debug.enabled) {
+			return
+		}
+
+		CanvasLayer.layers[1].drawText(this.entity.index.toString(), this.entity.loc, new Color(255, 0, 0, 1))
 	}
 }

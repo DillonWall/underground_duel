@@ -27,4 +27,8 @@ export class Tile extends Entity {
 
 		this.addComponent(new TileDrawComponent(this))
 	}
+
+	public update(deltaTime: number): void {
+		super.update(deltaTime)
+	}
 }

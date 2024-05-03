@@ -15,6 +15,8 @@ export abstract class Entity implements IUpdate, IAwake {
 	constructor() {}
 
 	public awake(): void {
+		// console.log(`Entity ${this.constructor.name} awake`)
+
 		this._components.forEach((component) => {
 			component.awake()
 		})

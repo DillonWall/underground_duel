@@ -1,4 +1,5 @@
 import { Entity } from "../utils/ecs/entity.js";
+import { Tilemap } from "./tilemap/tilemap.js";
 export class Game extends Entity {
     // private readonly _stateMachina = new GameStateMachina(this)
     get entities() {
@@ -7,10 +8,13 @@ export class Game extends Entity {
     constructor() {
         super();
         this._lastTimestamp = 0;
+        this._entities = [];
+        this._entities.push(new Tilemap());
     }
-    Awake() {
+    awake() {
         // this.addComponent(new GameInputComponent())
         // this.addComponent(new StartGameUI(document.body))
+        console.log("Awake");
         super.awake();
         // awake all children
         for (const entity of this._entities) {
@@ -34,7 +38,11 @@ export class Game extends Entity {
     // 	this._stateMachina.Start()
     // }
     update() {
-        const deltaTime = (Date.now() - this._lastTimestamp) / 1000;
+        // FPS calculations
+        const now = Date.now();
+        const deltaTime = (now - this._lastTimestamp) / 1000; // In seconds
+        const fps = 1 / deltaTime;
+        this._lastTimestamp = now;
         // update all components
         super.update(deltaTime);
         // update all children
@@ -42,8 +50,6 @@ export class Game extends Entity {
             entity.update(deltaTime);
         }
         // this._stateMachina.update(deltaTime)
-        // update the timestamp
-        this._lastTimestamp = Date.now();
         // Invoke on next frame
         window.requestAnimationFrame(() => this.update());
     }
