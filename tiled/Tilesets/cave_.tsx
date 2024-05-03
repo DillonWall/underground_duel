@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.10.2" name="cave_" tilewidth="16" tileheight="16" tilecount="64" columns="16">
  <image source="../../assets/Tilesets/cave_.png" width="256" height="64"/>
+ <tile id="0">
+  <objectgroup draworder="index" id="5">
+   <object id="4" x="9.02273" y="9.11932" width="14.0956" height="14.8194"/>
+  </objectgroup>
+ </tile>
  <tile id="7" probability="0.005"/>
  <tile id="8" probability="0.005"/>
  <tile id="9" probability="0.01"/>
