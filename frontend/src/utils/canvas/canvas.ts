@@ -101,4 +101,8 @@ export class Canvas implements IAwake {
 		this._ctx.fillStyle = color.toString()
 		this._ctx.fillText(text, position.x, position.y)
 	}
+
+	public drawImage(image: HTMLImageElement, sLoc: Vector2D, sSize: Vector2D, dLoc: Vector2D, dSize: Vector2D): void {
+		this._ctx.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, dLoc.x, dLoc.y, dSize.x, dSize.y)
+	}
 }

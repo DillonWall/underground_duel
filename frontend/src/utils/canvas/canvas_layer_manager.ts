@@ -2,7 +2,7 @@ import { Settings } from "../../settings/settings.js"
 import { Vector2D } from "../math/vector2d.js"
 import { Canvas } from "./canvas.js"
 
-export class CanvasLayer {
+export class CanvasLayerManager {
 	private static _layers: Canvas[]
 	private static readonly _numLayers: number = Settings.canvas.numLayers
 

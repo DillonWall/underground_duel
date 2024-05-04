@@ -14,7 +14,8 @@ export const Settings = Object.freeze({
 		backgroundColor: "#000000",
 		numLayers: 5,
 	},
-	tilemap: {
-		tileSize: 16,
-	},
+	tileSize: 16,
+	tilemapPath: "assets/tilemaps/",
+	tilesetPath: "assets/tilesets/",
+	tilesetImagePath: "assets/tilesets/images/",
 })

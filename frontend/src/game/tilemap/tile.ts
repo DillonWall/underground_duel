@@ -14,16 +14,16 @@ export class Tile extends Entity {
 	public size: Vector2D
 	public index: Vector2D
 	public imageIndex: number
-	public tilesetIndex: number
+	public tilesetId: number
 
-	constructor(loc: Vector2D, size: Vector2D, index: Vector2D, imageIndex: number, tilesetIndex: number) {
+	constructor(loc: Vector2D, size: Vector2D, index: Vector2D, imageIndex: number, tilesetId: number) {
 		super()
 
 		this.loc = loc
 		this.size = size
 		this.index = index
 		this.imageIndex = imageIndex
-		this.tilesetIndex = tilesetIndex
+		this.tilesetId = tilesetId
 
 		this.addComponent(new TileDrawComponent(this))
 	}
