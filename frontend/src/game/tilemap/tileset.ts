@@ -6,6 +6,7 @@ import { Vector2D } from "../../utils/math/vector2d.js"
 export class Tileset {
 	private _name: string
 	private _image: HTMLImageElement
+	private _animations: Map<number, TileAnimation> = new Map()
 	private readonly _tileCountX
 	private readonly _tileCountY
 

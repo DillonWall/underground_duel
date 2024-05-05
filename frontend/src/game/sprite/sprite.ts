@@ -1,11 +1,11 @@
-import { Animation } from "./animation.js"
+import { PlayerAnimation } from "./player_animation.js"
 
 export class Sprite {
 	spriteSheet: HTMLImageElement
 	frameWidth: number
 	frameHeight: number
 	currentAnimation: string
-	animations: Map<string, Animation> = new Map()
+	animations: Map<string, PlayerAnimation> = new Map()
 
 	constructor(imageSrc: string, spriteSheetInfoFile: string) {
 		this.spriteSheet = new Image()
