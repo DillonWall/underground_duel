@@ -27,7 +27,7 @@ export class TileDrawComponent implements IComponent {
 		// 	new Color(Math.min(this.entity.loc.y, 255), Math.min(this.entity.loc.x, 255), 0, 1)
 		// )
 
-		const tileset = TilesetManager.getTilesetById(this.entity.tilesetId)
+		const tileset = TilesetManager.getTilesetByName(this.entity.tilesetName)
 		const sLoc = tileset.getSubVectorLocation(this.entity.imageIndex)
 		const sSize = tileset.getSubVectorSize()
 		CanvasLayerManager.layers[0].drawImage(tileset.image, sLoc, sSize, this.entity.loc, this.entity.size)

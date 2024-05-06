@@ -1,24 +1,27 @@
 import { Animation } from "../../utils/animation/animation.js"
-import { IUpdate } from "../../utils/lifecycle/update.js"
 
 export class TileAnimation extends Animation {
-	// name: string
-	// imgSrc: string
-	// delays: number[]
-	// loop: boolean
-	// lengthFrames: number
-	// currentFrame: number
-	private _frameTileIds: number[]
+	private _frameImageIndecies: number[]
 
-	constructor(name: string, imgSrc: string, delays: number[], loop: boolean, frameTileIds: number[]) {
+	constructor(name: string, imgSrc: string, delays: number[], frameTileIds: number[], loop: boolean = true) {
 		super(name, imgSrc, delays, loop)
 
-		this._frameTileIds = frameTileIds
+		this._frameImageIndecies = frameTileIds
 	}
 
-	public getFrameTileId(frameIndex: number): number {
-		return this._frameTileIds[frameIndex]
+	public getFrameImageIndex(frameIndex: number): number {
+		return this._frameImageIndecies[frameIndex]
 	}
 
-	public update()
+	public getCurrentFrameImageIndex(): number {
+		return this._frameImageIndecies[this.currentFrame]
+	}
+
+	public awake(): void {
+		super.awake()
+	}
+
+	public update(deltaTime: number): void {
+		super.update(deltaTime)
+	}
 }

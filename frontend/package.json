@@ -2,23 +2,32 @@
 	"name": "frontend",
 	"version": "1.0.0",
 	"description": "",
-	"main": "public/js/index.js",
+	"main": "public/js/main.js",
 	"type": "module",
 	"scripts": {
 		"clean": "rimraf public/js/",
 		"build": "npm run clean && copyfiles -u 1 src/**/*.html src/**/*.css public/js/ && tsc",
 		"liveserver": "live-server --open=public/index.html --watch=public/",
+		"web-dev-server": "web-dev-server --open /public/ --node-resolve --watch",
 		"tsc-watch": "tsc --watch",
-		"start": "npm run build && concurrently --kill-others \"npm:liveserver\" \"npm:tsc-watch\""
+		"start": "npm run build && concurrently --kill-others \"npm:web-dev-server\" \"npm:tsc-watch\""
 	},
 	"author": "Dillon Wall",
 	"license": "ISC",
 	"devDependencies": {
 		"@types/node": "^20.12.8",
+		"@web/dev-server": "^0.4.4",
 		"concurrently": "^8.2.2",
 		"copyfiles": "^2.4.1",
 		"live-server": "^1.2.2",
 		"rimraf": "^5.0.5",
 		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"express": "^4.19.2",
+		"fs": "^0.0.1-security",
+		"nodemon": "^3.1.0",
+		"path": "^0.12.7",
+		"socket.io": "^4.7.5"
 	}
 }

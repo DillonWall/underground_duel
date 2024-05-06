@@ -1,7 +1,6 @@
-import { IAwake } from "../lifecycle/awake.js"
-import { IUpdate } from "../lifecycle/update.js"
+import { Entity } from "../ecs/entity.js"
 
-export abstract class Animation implements IUpdate, IAwake {
+export abstract class Animation extends Entity {
 	protected name: string
 	protected imgSrc: string
 	protected delays: number[]
@@ -14,6 +13,8 @@ export abstract class Animation implements IUpdate, IAwake {
 	protected resetOnAwake: boolean
 
 	constructor(name: string, imgSrc: string, delays: number[], loop: boolean, resetOnAwake: boolean = true) {
+		super()
+
 		this.name = name
 		this.imgSrc = imgSrc
 		this.delays = delays

@@ -33,21 +33,43 @@ export class Tilemap extends Entity {
 		const tilemapJson = JSON.parse(fs.readFileSync(fileSrc, "utf-8"))
 		const layers = tilemapJson.layers
 
-		// Initialize all tilesets
+		// Initialize all tilesets and extract the names and their starting GID
+		const tilesetNames: string[] = []
+		const tilesetGIDs: number[] = []
 		for (let i = 0; i < tilemapJson.tilesets.length; i++) {
 			const tileset = tilemapJson.tilesets[i]
-			const tilesetPath = path.join(Settings.tilesetPath, path.basename(tileset.source) + ".tsj")
+			const tilesetName = path.basename(tileset.source)
+			const tilesetPath = path.join(Settings.tilesetPath, tilesetName + ".tsj")
+
 			TilesetManager.loadTileset(tilesetPath)
+
+			tilesetNames.push(tilesetName)
+			tilesetGIDs.push(tileset.firstgid)
 		}
 
-		// Initialize all tiles in the tilemap
-		for (let layer = 0; layer < layers.length; layer++) {
+		// Initialize all layers of tiles in the tilemap
+		for (let l = 0; l < layers.length; l++) {
 			let layer: Tile[][] = []
 			for (let y = 0; y < tilemapJson.height; y++) {
 				let row: Tile[] = []
 				for (let x = 0; x < tilemapJson.width; x++) {
-					const tilesetId = 0 // Which tileset this is from
-					const imageIndex = 0 // Index of image of tile in the tileset
+					// Note: We need to shift based on GID
+					let gid = layers[l].data[y * tilemapJson.width + x]
+					if (gid <= 0) {
+						continue
+					}
+					let tilesetName = ""
+					let imageIndex = gid
+					for (let i = tilesetGIDs.length - 1; i >= 0; i--) {
+						if (imageIndex >= tilesetGIDs[i]) {
+							tilesetName = tilesetNames[i]
+							imageIndex -= tilesetGIDs[i]
+							break
+						}
+					}
+					if (tilesetName === "") {
+						throw new Error(`Tileset not found for tile with GID ${gid} when parsing tilemap ${this._name}`)
+					}
 
 					row.push(
 						new Tile(
@@ -55,7 +77,7 @@ export class Tilemap extends Entity {
 							new Vector2D(Settings.tileSize, Settings.tileSize),
 							new Vector2D(x, y),
 							imageIndex,
-							tilesetId
+							tilesetName
 						)
 					)
 				}

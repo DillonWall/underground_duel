@@ -1,7 +1,7 @@
 import { Tileset } from "./tileset.js"
 
 export class TilesetManager {
-	private static _tilesets: Map<number, Tileset> = new Map() // maps tileset id to the imported tileset for quick access
+	private static _tilesets: Map<string, Tileset> = new Map() // maps tileset name to the imported tileset for quick access
 
 	private constructor() {
 		/* make it unaccessible */
@@ -9,14 +9,14 @@ export class TilesetManager {
 
 	public static loadTileset(tilesetFileSrc: string): void {
 		const tileset = new Tileset(tilesetFileSrc)
-		this._tilesets.set(tileset.id, tileset)
+		this._tilesets.set(tileset.name, tileset)
 	}
 
-	public static getTilesetById(tilesetId: number): Tileset {
-		return this._tilesets.get(tilesetId)
+	public static getTilesetByName(tilesetName: string): Tileset {
+		return this._tilesets.get(tilesetName)
 	}
 
-	public static removeTileset(tilesetId: number): void {
-		this._tilesets.delete(tilesetId)
+	public static removeTileset(tilesetName: string): void {
+		this._tilesets.delete(tilesetName)
 	}
 }

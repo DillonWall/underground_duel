@@ -1,5 +1,7 @@
+import path from "path"
+import { Settings } from "../settings/settings.js"
 import { Entity } from "../utils/ecs/entity.js"
-import { Tilemap } from "./tilemap/tilemap.js"
+import { TilemapManager } from "./tilemap/tilemap_manager.js"
 
 export class Game extends Entity {
 	private _lastTimestamp = 0
@@ -13,7 +15,9 @@ export class Game extends Entity {
 	constructor() {
 		super()
 
-		this._entities.push(new Tilemap())
+		TilemapManager.loadTilemap(path.join(Settings.tilemapPath, "TestingTerrains.tmj"))
+		TilemapManager.setCurrentTilemapByName("TestingTerrains")
+		this._entities.push(TilemapManager.getCurrentTilemap())
 	}
 
 	public awake(): void {

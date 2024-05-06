@@ -15,7 +15,7 @@ export const Settings = Object.freeze({
 		numLayers: 5,
 	},
 	tileSize: 16,
-	tilemapPath: "assets/tilemaps/",
-	tilesetPath: "assets/tilesets/",
-	tilesetImagePath: "assets/tilesets/images/",
+	tilemapPath: "/public/assets/tilemaps/",
+	tilesetPath: "/public/assets/tilesets/",
+	tilesetImagePath: "/public/assets/tilesets/images/",
 })

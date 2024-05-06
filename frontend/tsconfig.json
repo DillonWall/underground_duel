@@ -12,5 +12,6 @@
 		// "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
 		"esModuleInterop": true
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*"],
+	"exclude": ["src/server/*"]
 }
