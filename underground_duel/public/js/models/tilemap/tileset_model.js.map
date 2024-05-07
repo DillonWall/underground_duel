@@ -1,0 +1,1 @@
+{"version":3,"file":"tileset_model.js","sourceRoot":"","sources":["../../../../src/models/tilemap/tileset_model.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,YAAY;IACxB,YACQ,IAAY,EACZ,QAAgB,EAChB,UAAqD,EACrD,UAAkB,EAClB,UAAkB;QAJlB,SAAI,GAAJ,IAAI,CAAQ;QACZ,aAAQ,GAAR,QAAQ,CAAQ;QAChB,eAAU,GAAV,UAAU,CAA2C;QACrD,eAAU,GAAV,UAAU,CAAQ;QAClB,eAAU,GAAV,UAAU,CAAQ;IACvB,CAAC;CACJ"}

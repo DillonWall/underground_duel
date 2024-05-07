@@ -1,0 +1,29 @@
+{
+	"name": "underground_duel",
+	"version": "1.0.0",
+	"description": "",
+	"main": "public/js/server.js",
+	"type": "module",
+	"scripts": {
+		"clean": "rimraf public/js/",
+		"nodemon": "start http://localhost:3000 && nodemon public/js/server.js",
+		"tsc-watch": "tsc --watch",
+		"build": "npm run clean && tsc",
+		"dev": "npm run clean && concurrently --kill-others \"npm:tsc-watch\" \"npm:nodemon\""
+	},
+	"author": "Dillon Wall",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^20.12.8",
+		"@web/dev-server": "^0.4.4",
+		"concurrently": "^8.2.2",
+		"rimraf": "^5.0.5",
+		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"app-root-path": "^3.1.0",
+		"express": "^4.19.2",
+		"nodemon": "^3.1.0",
+		"socket.io": "^4.7.5"
+	}
+}
