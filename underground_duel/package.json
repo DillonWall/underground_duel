@@ -22,6 +22,7 @@
 	},
 	"dependencies": {
 		"app-root-path": "^3.1.0",
+		"collider2d": "^1.1.1",
 		"express": "^4.19.2",
 		"nodemon": "^3.1.0",
 		"socket.io": "^4.7.5"

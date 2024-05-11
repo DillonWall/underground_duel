@@ -1,10 +1,8 @@
 import { Entity } from "../ecs/entity.js"
 
 export abstract class Animation extends Entity {
-	protected name: string
-	protected imgSrc: string
 	protected delays: number[]
-	protected loop: boolean
+	public loop: boolean
 	protected resetOnAwake: boolean
 
 	// Calculated properties
@@ -14,11 +12,9 @@ export abstract class Animation extends Entity {
 	protected currentFrame: number
 	protected playing: boolean
 
-	constructor(name: string, imgSrc: string, delays: number[], loop: boolean, resetOnAwake: boolean = true) {
+	constructor(delays: number[], loop: boolean, resetOnAwake: boolean = true) {
 		super()
 
-		this.name = name
-		this.imgSrc = imgSrc
 		this.delays = delays
 		this.lengthFrames = delays.length
 		this.lengthTime = this.delays.reduce((total, delay) => total + delay, 0)
@@ -30,6 +26,8 @@ export abstract class Animation extends Entity {
 	}
 
 	public awake(): void {
+		super.awake()
+
 		if (this.resetOnAwake) {
 			this.elapsedTime = 0
 			this.currentFrame = 0
@@ -37,7 +35,15 @@ export abstract class Animation extends Entity {
 		this.playing = true
 	}
 
+	public sleep(): void {
+		super.sleep()
+
+		this.playing = false
+	}
+
 	public update(deltaTime: number): void {
+		super.update(deltaTime)
+
 		if (!this.playing || this.lengthFrames === 0) {
 			return
 		}

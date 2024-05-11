@@ -5,7 +5,7 @@ import { Vector2D } from "../utils/math/vector2d.js"
 import { TilesetModel } from "../models/tilemap/tileset_model.js"
 import { TileModel } from "../models/tilemap/tile_model.js"
 import { TilemapModel } from "../models/tilemap/tilemap_model.js"
-import { ServerSettings } from "./server_settings.js"
+import { ServerSettings } from "../settings/server_settings.js"
 import { Settings } from "../settings/settings.js"
 
 export async function parseTilemapFile(fileSrc: string): Promise<TilemapModel> {

@@ -1,18 +1,11 @@
-// Tile extends Entity
-// TODO: (see Tilemap)
-// loc: Vector2D
-// size: Vector2D
-// index: Vector2D
-// imageIndex: number
-
 import { TileModel } from "../../models/tilemap/tile_model.js"
 import { Entity } from "../../utils/ecs/entity.js"
 import { Vector2D } from "../../utils/math/vector2d.js"
-import { TileDrawComponent } from "./components/tiledraw.js"
+import { AreaComponent } from "../../utils/shared_components/area_component.js"
+import { TileDrawComponent } from "./components/tile_draw_component.js"
 
 export class Tile extends Entity {
-	public loc: Vector2D
-	public size: Vector2D
+	public area: AreaComponent
 	public index: Vector2D
 	public layer: number
 	public imageIndex: number
@@ -28,12 +21,13 @@ export class Tile extends Entity {
 	) {
 		super()
 
-		this.loc = loc
-		this.size = size
+		this.area = new AreaComponent(this, loc, size)
 		this.index = index
 		this.layer = layer
 		this.imageIndex = imageIndex
 		this.tilesetName = tilesetName
+
+		this.components.push(this.area)
 	}
 
 	public static fromTileModel(tileModel: TileModel, layer: number): Tile {

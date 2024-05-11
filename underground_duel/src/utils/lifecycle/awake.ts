@@ -4,4 +4,5 @@
 
 export interface IAwake {
 	awake(): void
+	sleep(): void
 }

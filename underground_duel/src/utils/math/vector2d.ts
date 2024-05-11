@@ -45,4 +45,28 @@ export class Vector2D {
 	public static divide(a: Vector2D, denominator: number): Vector2D {
 		return new Vector2D(a.x / denominator, a.y / denominator)
 	}
+
+	public static zero(): Vector2D {
+		return new Vector2D(0, 0)
+	}
+
+	public static left(): Vector2D {
+		return new Vector2D(-1, 0)
+	}
+
+	public static right(): Vector2D {
+		return new Vector2D(1, 0)
+	}
+
+	public static up(): Vector2D {
+		return new Vector2D(0, -1)
+	}
+
+	public static down(): Vector2D {
+		return new Vector2D(0, 1)
+	}
+
+	public static isZero(a: Vector2D): boolean {
+		return a.x == 0 && a.y == 0
+	}
 }

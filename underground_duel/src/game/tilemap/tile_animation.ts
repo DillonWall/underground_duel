@@ -1,17 +1,11 @@
-import TileAnimationModel from "../../models/tilemap/tile_animation_model.js"
+import { TileAnimationModel } from "../../models/tilemap/tile_animation_model.js"
 import { Animation } from "../../utils/animation/animation.js"
 
 export class TileAnimation extends Animation {
 	private _frameImageIndecies: number[]
 
 	constructor(tileAnimationModel: TileAnimationModel) {
-		super(
-			tileAnimationModel.name,
-			tileAnimationModel.imageSrc,
-			tileAnimationModel.delays,
-			tileAnimationModel.loop,
-			tileAnimationModel.resetOnAwake
-		)
+		super(tileAnimationModel.delays, tileAnimationModel.loop)
 
 		this._frameImageIndecies = tileAnimationModel.frameImageIndecies
 	}
@@ -22,13 +16,5 @@ export class TileAnimation extends Animation {
 
 	public getCurrentFrameImageIndex(): number {
 		return this._frameImageIndecies[this.currentFrame]
-	}
-
-	public awake(): void {
-		super.awake()
-	}
-
-	public update(deltaTime: number): void {
-		super.update(deltaTime)
 	}
 }

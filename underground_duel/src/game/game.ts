@@ -5,8 +5,10 @@ import { Tilemap } from "./tilemap/tilemap.js"
 import { Tileset } from "./tilemap/tileset.js"
 import { TilesetManager } from "./tilemap/tileset_manager.js"
 import { TilemapModel } from "../models/tilemap/tilemap_model.js"
-import { Vector2D } from "../utils/math/vector2d.js"
 import { CanvasLayerManager } from "../utils/canvas/canvas_layer_manager.js"
+import { SpriteModel } from "../models/sprites/sprite_model.js"
+import { Player } from "./characters/player.js"
+import { Vector2D } from "../utils/math/vector2d.js"
 
 export class Game extends Entity {
 	private _lastTimestamp = 0
@@ -40,18 +42,25 @@ export class Game extends Entity {
 			// Setup tilesets
 			for (const tilesetModel of tilemapModel.tilesets) {
 				const tileset = new Tileset(tilesetModel)
-				tileset.loadImage()
 				TilesetManager.loadTileset(tileset)
-				this._entities.push(tileset)
 				tileset.awake()
+				this._entities.push(tileset)
 			}
 
 			// Setup tilemap
 			const tilemap = new Tilemap(tilemapModel)
 			TilemapManager.loadTilemap(tilemap)
 			TilemapManager.setCurrentTilemapByName(tilemap.name)
-			this._entities.push(tilemap)
 			tilemap.awake()
+			this._entities.push(tilemap)
+		})
+
+		this._socket.on("player", (playerSpriteModel: SpriteModel) => {
+			console.log("Player received from server:", playerSpriteModel)
+
+			const player = new Player(playerSpriteModel, new Vector2D(100, 100))
+			player.awake()
+			this._entities.push(player)
 		})
 	}
 
@@ -108,7 +117,10 @@ export class Game extends Entity {
 
 		// this._stateMachina.update(deltaTime)
 
-		// Invoke on next frame
+		// // Test Lag
+		// new Promise((resolve) => setTimeout(resolve, 50)).then(() => {
+		// 	window.requestAnimationFrame(() => this.update())
+		// })
 		window.requestAnimationFrame(() => this.update())
 	}
 }

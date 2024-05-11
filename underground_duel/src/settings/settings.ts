@@ -14,9 +14,23 @@ export const Settings = Object.freeze({
 		canvasHeight: 576,
 		backgroundColor: "#000000",
 		numLayers: 7,
+		playerLayer: 3,
 	},
 	tile: {
 		tileSize: 16,
-		tilesetImagePath: "assets/tilesets/images/",
+	},
+	controls: {
+		left: ["KeyA", "ArrowLeft"],
+		right: ["KeyD", "ArrowRight"],
+		up: ["KeyW", "ArrowUp"],
+		down: ["KeyS", "ArrowDown"],
+		attack: ["KeyJ", "Space"],
+	},
+	gamepad: {
+		attack: 0,
+		block: 2,
+	},
+	player: {
+		moveSpeed: 100,
 	},
 })

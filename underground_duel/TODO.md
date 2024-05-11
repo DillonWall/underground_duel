@@ -16,15 +16,15 @@
 <!-- - Import tilemaps from file (created with Tiled) -->
 <!-- - Consolidate file structure -->
 <!-- - Add a scale factor to all images and tile locations -->
-- Add animations to tiles
-- Add Sprite class
-- Add a playable character
-    - Keybindings
-- Add a camera that follows the player
+<!-- - Add animations to tiles -->
+<!-- - Add Sprite class -->
+<!-- - Add a playable character
+    - Keybindings -->
+<!-- - Add a camera that follows the player -->
 - Add collision detection
     - Look into the collision stuff in Tiled
-- Add animated tiles
-    - Look into the animated tiles in Tiled
+<!-- - Add animated tiles
+    - Look into the animated tiles in Tiled -->
 - Sound effects and music
 - Player animations and attacks
 - GameStateManager

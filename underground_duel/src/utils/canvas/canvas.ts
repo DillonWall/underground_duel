@@ -39,6 +39,11 @@ export class Canvas implements IAwake {
 		this._ctx = ctx
 	}
 
+	public sleep(): void {
+		this._elm.remove()
+		this._ctx = null
+	}
+
 	public setStyle(style: Partial<CSSStyleDeclaration>): void {
 		for (const key in style) {
 			if (!Object.hasOwnProperty.call(style, key)) {
@@ -105,9 +110,43 @@ export class Canvas implements IAwake {
 		this._ctx.fillText(text, position.x, position.y)
 	}
 
-	public drawImage(image: HTMLImageElement, sLoc: Vector2D, sSize: Vector2D, dLoc: Vector2D, dSize: Vector2D): void {
+	public drawImage(
+		image: HTMLImageElement,
+		sLoc: Vector2D,
+		sSize: Vector2D,
+		dLoc: Vector2D,
+		dSize: Vector2D,
+		flip: boolean = false
+	): void {
 		dLoc = Vector2D.multiply(dLoc, Settings.video.scale)
 		dSize = Vector2D.multiply(dSize, Settings.video.scale)
-		this._ctx.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, dLoc.x, dLoc.y, dSize.x, dSize.y)
+		if (flip) {
+			this._ctx.scale(-1, 1)
+			this._ctx.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, -dLoc.x - dSize.x, dLoc.y, dSize.x, dSize.y)
+			this._ctx.setTransform(1, 0, 0, 1, 0, 0)
+		} else {
+			this._ctx.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, dLoc.x, dLoc.y, dSize.x, dSize.y)
+		}
+	}
+
+	public drawImageCenter(
+		image: HTMLImageElement,
+		sLoc: Vector2D,
+		sSize: Vector2D,
+		dSize: Vector2D,
+		flip: boolean = false
+	): void {
+		dSize = Vector2D.multiply(dSize, Settings.video.scale)
+		const dLoc = new Vector2D(
+			Settings.canvas.canvasWidth / 2 - dSize.x / 2,
+			Settings.canvas.canvasHeight / 2 - dSize.y / 2
+		)
+		if (flip) {
+			this._ctx.scale(-1, 1)
+			this._ctx.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, -dLoc.x - dSize.x, dLoc.y, dSize.x, dSize.y)
+			this._ctx.setTransform(1, 0, 0, 1, 0, 0)
+		} else {
+			this._ctx.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, dLoc.x, dLoc.y, dSize.x, dSize.y)
+		}
 	}
 }

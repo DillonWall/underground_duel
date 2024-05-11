@@ -3,7 +3,8 @@ import { createServer } from "http"
 import { Server } from "socket.io"
 import path from "path"
 import { parseTilemapFile } from "./server/tilemap_parser.js"
-import { ServerSettings } from "./server/server_settings.js"
+import { parseSpriteFile } from "./server/sprite_parser.js"
+import { ServerSettings } from "./settings/server_settings.js"
 import { TilemapModel } from "./models/tilemap/tilemap_model.js"
 
 const app = express()
@@ -16,6 +17,8 @@ async function main() {
 		path.join(ServerSettings.tilemapPath, "TestingTerrains.tmj")
 	)
 
+	const playerSpriteModel = await parseSpriteFile(path.join(ServerSettings.spriteSheetPath, "player.tsj"))
+
 	io.on("connection", (socket) => {
 		console.log("Client connected")
 
@@ -24,6 +27,7 @@ async function main() {
 		})
 
 		socket.emit("map", tilemapModel)
+		socket.emit("player", playerSpriteModel)
 	})
 
 	app.use(express.static("public"))

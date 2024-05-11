@@ -1,4 +1,4 @@
-import TileAnimationModel from "./tile_animation_model.js"
+import { TileAnimationModel } from "./tile_animation_model.js"
 
 export class TilesetModel {
 	constructor(
