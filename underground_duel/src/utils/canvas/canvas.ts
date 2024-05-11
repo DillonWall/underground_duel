@@ -37,6 +37,11 @@ export class Canvas implements IAwake {
 
 		ctx.imageSmoothingEnabled = false
 		this._ctx = ctx
+
+		this.setStyle({
+			imageRendering: "pixelated",
+			// imageRendering: "crisp-edges",
+		})
 	}
 
 	public sleep(): void {

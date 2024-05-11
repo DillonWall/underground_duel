@@ -69,4 +69,8 @@ export class Vector2D {
 	public static isZero(a: Vector2D): boolean {
 		return a.x == 0 && a.y == 0
 	}
+
+	public static round(a: Vector2D): Vector2D {
+		return new Vector2D(Math.round(a.x), Math.round(a.y))
+	}
 }

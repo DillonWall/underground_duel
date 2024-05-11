@@ -36,6 +36,12 @@ export class Game extends Entity {
 			console.log("Message received from server:", message)
 		})
 
+		this._socket.on("connected", () => {
+			console.log("Reconnected to server")
+			// this._stateMachina.restart()
+			this._entities = []
+		})
+
 		this._socket.on("map", (tilemapModel: TilemapModel) => {
 			console.log("Map received from server:", tilemapModel.name)
 

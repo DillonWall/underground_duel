@@ -21,6 +21,7 @@ async function main() {
 
 	io.on("connection", (socket) => {
 		console.log("Client connected")
+		socket.emit("connected")
 
 		socket.on("disconnect", () => {
 			console.log("Client disconnected")

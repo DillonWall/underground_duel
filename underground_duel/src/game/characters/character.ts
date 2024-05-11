@@ -91,6 +91,8 @@ export abstract class Character extends Sprite {
 	public update(deltaTime: number): void {
 		super.update(deltaTime)
 
-		this.area.loc = Vector2D.add(this.area.loc, Vector2D.multiply(this._direction, this._velocity * deltaTime))
+		this.area.loc = Vector2D.round(
+			Vector2D.add(this.area.loc, Vector2D.multiply(this._direction, this._velocity * deltaTime))
+		)
 	}
 }
