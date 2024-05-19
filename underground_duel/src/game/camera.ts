@@ -1,4 +1,3 @@
-import { Vector } from "collider2d"
 import { Settings } from "../settings/settings.js"
 import { Vector2D } from "../utils/math/vector2d.js"
 import { AreaComponent } from "../utils/shared_components/area_component.js"

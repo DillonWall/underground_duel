@@ -1,98 +1,89 @@
-import { SpriteModel } from "../../models/sprites/sprite_model.js"
 import { Sprite } from "./sprite/sprite.js"
 import { AreaComponent } from "../../utils/shared_components/area_component.js"
+import { MovementComponent } from "../../utils/shared_components/movement_component.js"
 import { CharacterDrawComponent } from "./components/character_draw_component.js"
 import { Vector2D } from "../../utils/math/vector2d.js"
+import { SpriteSheet } from "./sprite/spritesheet.js"
 
-export abstract class Character extends Sprite {
-	protected _direction: Vector2D = Vector2D.zero()
-	protected _velocity: number = 0
-	protected _moveSpeed: number
-	public area: AreaComponent
-	public layer: number
-	public flipAnimation: boolean = false
-	public drawCenter: boolean
+enum CharacterAnimationList {
+	IdleDown = "Idle_Down",
+	IdleRight = "Idle_Right",
+	IdleUp = "Idle_Up",
+	MoveDown = "Move_Down",
+	MoveRight = "Move_Right",
+	MoveUp = "Move_Up",
+	AttackDown = "Attack_Down",
+	AttackRight = "Attack_Right",
+	AttackUp = "Attack_Up",
+	Death = "Death",
+}
+
+export class Character extends Sprite {
+	public movement_c: MovementComponent
+	public area_c: AreaComponent
+	public draw_c: CharacterDrawComponent
 
 	constructor(
-		spriteModel: SpriteModel,
+		spriteSheet: SpriteSheet,
 		loc: Vector2D,
-		loopedAnimations: string[],
 		moveSpeed: number,
 		layer: number,
 		drawCenter: boolean = false
 	) {
-		super(spriteModel.imageSrc, spriteModel.frameWidth, spriteModel.frameHeight, spriteModel.animations)
+		super(spriteSheet)
 
-		this._moveSpeed = moveSpeed
-		this.layer = layer
-		this.drawCenter = drawCenter
-		this.area = new AreaComponent(this, loc, new Vector2D(spriteModel.frameWidth, spriteModel.frameHeight))
-		this.components.push(this.area)
-		this.components.push(new CharacterDrawComponent(this))
+		this.area_c = new AreaComponent(this, loc, spriteSheet.imageDivider.getSubVectorSize())
+		this.movement_c = new MovementComponent(this, this.area_c, moveSpeed, this.setAnimationBasedOnDirection)
+		this.addComponent(this.area_c)
+		this.addComponent(this.movement_c)
 
-		// setup animations that should loop
-		this.animations.forEach((animation, animationName) => {
-			if (
-				loopedAnimations.some((x) => {
-					return x === animationName
-				})
-			) {
-				animation.loop = true
+		this.draw_c = new CharacterDrawComponent(this, layer, drawCenter)
+		this.addDrawComponent(this.draw_c)
+	}
+
+	public setAnimationBasedOnDirection(prevDirection?: Vector2D): void {
+		let dir = this.movement_c.direction
+		if (Vector2D.isZero(dir)) {
+			if (prevDirection) {
+				dir = prevDirection
+			} else {
+				dir = new Vector2D(0, 1) // Default looking down
 			}
-		})
-	}
-
-	protected setAnimation(animation: string): void {
-		this.currentAnimation = animation
-	}
-
-	public addDirection(direction: Vector2D): void {
-		this._direction = Vector2D.add(this._direction, direction)
-
-		this.validateDirection()
-		this.setVelocityBasedOnDirection()
-		this.setAnimationBasedOnDirection()
-	}
-
-	public removeDirection(direction: Vector2D): void {
-		const prevDirection = this._direction
-		this._direction = Vector2D.subtract(this._direction, direction)
-
-		this.validateDirection()
-		this.setVelocityBasedOnDirection()
-		this.setAnimationBasedOnDirection(prevDirection)
-	}
-
-	private setVelocityBasedOnDirection(): void {
-		if (Vector2D.isZero(this._direction)) {
-			this._velocity = 0
+		}
+		if (this.movement_c.velocity > 0) {
+			if (dir.y == 1) {
+				this.setAnimation(CharacterAnimationList.MoveDown)
+				this.draw_c.flip = false
+			} else if (dir.y == -1) {
+				this.setAnimation(CharacterAnimationList.MoveUp)
+				this.draw_c.flip = false
+			} else if (dir.x == 1) {
+				this.setAnimation(CharacterAnimationList.MoveRight)
+				this.draw_c.flip = false
+			} else if (dir.x == -1) {
+				this.setAnimation(CharacterAnimationList.MoveRight)
+				this.draw_c.flip = true
+			}
 		} else {
-			this._velocity = this._moveSpeed
+			if (dir.y == 1) {
+				this.setAnimation(CharacterAnimationList.IdleDown)
+				this.draw_c.flip = false
+			} else if (dir.y == -1) {
+				this.setAnimation(CharacterAnimationList.IdleUp)
+				this.draw_c.flip = false
+			} else if (dir.x == 1) {
+				this.setAnimation(CharacterAnimationList.IdleRight)
+				this.draw_c.flip = false
+			} else if (dir.x == -1) {
+				this.setAnimation(CharacterAnimationList.IdleRight)
+				this.draw_c.flip = true
+			}
 		}
 	}
 
-	private validateDirection(): void {
-		if (this._direction.x > 1) {
-			this._direction.x = 1
-		}
-		if (this._direction.x < -1) {
-			this._direction.x = -1
-		}
-		if (this._direction.y > 1) {
-			this._direction.y = 1
-		}
-		if (this._direction.y < -1) {
-			this._direction.y = -1
-		}
-	}
+	public awake(): void {
+		super.awake()
 
-	protected abstract setAnimationBasedOnDirection(prevDirection?: Vector2D): void
-
-	public update(deltaTime: number): void {
-		super.update(deltaTime)
-
-		this.area.loc = Vector2D.round(
-			Vector2D.add(this.area.loc, Vector2D.multiply(this._direction, this._velocity * deltaTime))
-		)
+		this.setAnimation(CharacterAnimationList.IdleDown)
 	}
 }

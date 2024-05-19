@@ -23,6 +23,7 @@
 <!-- - Add a camera that follows the player -->
 <!-- - Fix game not resetting when server resets -->
 <!-- - Fix tile drawing between pixels causing a line between them when moving the camera -->
+- Make everything use components
 - Add collision detection
     - Look into the collision stuff in Tiled
 <!-- - Add animated tiles

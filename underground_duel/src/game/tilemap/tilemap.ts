@@ -48,6 +48,18 @@ export class Tilemap extends Entity {
 		}
 	}
 
+	public sleep(): void {
+		super.sleep()
+
+		for (let i = 0; i < this._tileLayers.length; i++) {
+			for (let j = 0; j < this._tileLayers[i].length; j++) {
+				for (let k = 0; k < this._tileLayers[i][j].length; k++) {
+					this._tileLayers[i][j][k]?.sleep()
+				}
+			}
+		}
+	}
+
 	public update(deltaTime: number): void {
 		super.update(deltaTime)
 
@@ -55,6 +67,18 @@ export class Tilemap extends Entity {
 			for (let j = 0; j < this._tileLayers[i].length; j++) {
 				for (let k = 0; k < this._tileLayers[i][j].length; k++) {
 					this._tileLayers[i][j][k]?.update(deltaTime)
+				}
+			}
+		}
+	}
+
+	public draw(): void {
+		super.draw()
+
+		for (let i = 0; i < this._tileLayers.length; i++) {
+			for (let j = 0; j < this._tileLayers[i].length; j++) {
+				for (let k = 0; k < this._tileLayers[i][j].length; k++) {
+					this._tileLayers[i][j][k]?.draw()
 				}
 			}
 		}

@@ -8,33 +8,48 @@ import { DrawComponent } from "../../../utils/shared_components/draw_component.j
 
 export class CharacterDrawComponent extends DrawComponent {
 	override entity: Character
+	public flip: boolean = false
+	public layer: number
+	public drawCenter: boolean
 
-	constructor(entity: Character) {
+	constructor(entity: Character, layer: number, drawCenter: boolean) {
 		super(entity)
+
+		this.layer = layer
+		this.drawCenter = drawCenter
 	}
 
-	protected override draw(): void {
+	public draw(): void {
+		super.draw()
+
+		if (!this.entity.spriteSheet.image.loaded) {
+			if (Settings.debug.enabled) {
+				console.warn("SpriteSheet image not loaded yet.")
+			}
+			return
+		}
+
 		try {
-			const sLoc = this.entity.getCurrentSubVectorLocation()
-			const sSize = this.entity.getSubVectorSize()
-			if (this.entity.drawCenter) {
-				CanvasLayerManager.layers[this.entity.layer].drawImageCenter(
-					this.entity.spriteSheet,
+			const sLoc = this.entity.spriteSheet.imageDivider.getSubVectorLocation(
+				this.entity.currentAnimation.getCurrentFrameImageIndex()
+			)
+			const sSize = this.entity.spriteSheet.imageDivider.getSubVectorSize()
+			if (this.drawCenter) {
+				CanvasLayerManager.layers[this.layer].drawImageCenter(
+					this.entity.spriteSheet.image.image,
 					sLoc,
 					sSize,
-					this.entity.area.size,
-					this.entity.flipAnimation
+					this.entity.area_c.size,
+					this.flip
 				)
 			} else {
-				const sLoc = this.entity.getCurrentSubVectorLocation()
-				const sSize = this.entity.getSubVectorSize()
-				CanvasLayerManager.layers[this.entity.layer].drawImage(
-					this.entity.spriteSheet,
+				CanvasLayerManager.layers[this.layer].drawImage(
+					this.entity.spriteSheet.image.image,
 					sLoc,
 					sSize,
-					Vector2D.subtract(this.entity.area.loc, Camera.location),
-					this.entity.area.size,
-					this.entity.flipAnimation
+					Vector2D.subtract(this.entity.area_c.loc, Camera.location),
+					this.entity.area_c.size,
+					this.flip
 				)
 			}
 		} catch (e) {
@@ -42,13 +57,9 @@ export class CharacterDrawComponent extends DrawComponent {
 		}
 	}
 
-	protected override drawDebugInfo(): void {
-		if (!Settings.debug.enabled) {
-			return
-		}
-
+	public drawDebugInfo(): void {
 		CanvasLayerManager.layers[Settings.canvas.numLayers - 1].drawText(
-			Vector2D.toString(this.entity.area.loc),
+			Vector2D.toString(this.entity.area_c.loc),
 			new Vector2D(20, 40),
 			new Color(255, 0, 0, 1)
 		)

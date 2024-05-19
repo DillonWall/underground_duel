@@ -17,7 +17,7 @@ async function main() {
 		path.join(ServerSettings.tilemapPath, "TestingTerrains.tmj")
 	)
 
-	const playerSpriteModel = await parseSpriteFile(path.join(ServerSettings.spriteSheetPath, "player.tsj"))
+	const playerSpriteSheetModel = await parseSpriteFile(path.join(ServerSettings.spriteSheetPath, "player.tsj"))
 
 	io.on("connection", (socket) => {
 		console.log("Client connected")
@@ -28,7 +28,7 @@ async function main() {
 		})
 
 		socket.emit("map", tilemapModel)
-		socket.emit("player", playerSpriteModel)
+		socket.emit("player", playerSpriteSheetModel)
 	})
 
 	app.use(express.static("public"))

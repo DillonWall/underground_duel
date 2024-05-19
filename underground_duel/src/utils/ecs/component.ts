@@ -6,5 +6,5 @@ import { IUpdate } from "../lifecycle/update.js"
 import { Entity } from "./entity.js"
 
 export interface IComponent extends IAwake, IUpdate {
-	entity: Entity | null
+	entity: Entity
 }

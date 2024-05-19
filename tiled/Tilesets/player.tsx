@@ -4,9 +4,10 @@
   <export target="../../underground_duel/public/assets/spritesheets/player.tsj" format="json"/>
  </editorsettings>
  <image source="../../assets/Characters/player.png" width="288" height="480"/>
- <tile id="0" type="Idle_Down">
+ <tile id="0" type="Idle_Down,loop">
   <objectgroup draworder="index" id="2">
    <object id="1" x="20" y="24" width="9" height="17"/>
+   <object id="2" x="27.2727" y="7.72727" width="5.90909" height="6.36364"/>
   </objectgroup>
   <animation>
    <frame tileid="0" duration="100"/>
@@ -17,7 +18,7 @@
    <frame tileid="5" duration="100"/>
   </animation>
  </tile>
- <tile id="6" type="Idle_Right">
+ <tile id="6" type="Idle_Right,loop">
   <objectgroup draworder="index" id="2">
    <object id="1" x="20" y="24" width="9" height="17"/>
   </objectgroup>
@@ -30,7 +31,7 @@
    <frame tileid="11" duration="120"/>
   </animation>
  </tile>
- <tile id="12" type="Idle_Up">
+ <tile id="12" type="Idle_Up,loop">
   <objectgroup draworder="index" id="2">
    <object id="1" x="20" y="24" width="9" height="17"/>
   </objectgroup>
@@ -43,7 +44,7 @@
    <frame tileid="17" duration="120"/>
   </animation>
  </tile>
- <tile id="18" type="Move_Down">
+ <tile id="18" type="Move_Down,loop">
   <objectgroup draworder="index" id="2">
    <object id="1" x="20" y="24" width="9" height="17"/>
   </objectgroup>
@@ -56,7 +57,7 @@
    <frame tileid="23" duration="120"/>
   </animation>
  </tile>
- <tile id="24" type="Move_Right">
+ <tile id="24" type="Move_Right,loop">
   <objectgroup draworder="index" id="2">
    <object id="1" x="20" y="24" width="9" height="17"/>
   </objectgroup>
@@ -69,7 +70,7 @@
    <frame tileid="29" duration="120"/>
   </animation>
  </tile>
- <tile id="30" type="Move_Up">
+ <tile id="30" type="Move_Up,loop">
   <objectgroup draworder="index" id="2">
    <object id="1" x="20" y="24" width="9" height="17"/>
   </objectgroup>

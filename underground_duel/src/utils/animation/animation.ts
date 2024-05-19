@@ -1,72 +1,85 @@
+import { AnimationModel } from "../../models/animation/animation_model.js"
 import { Entity } from "../ecs/entity.js"
 
-export abstract class Animation extends Entity {
-	protected delays: number[]
+export class Animation extends Entity {
 	public loop: boolean
-	protected resetOnAwake: boolean
 
+	private _delays: number[]
+	private _resetOnAwake: boolean
+	private _frameImageIndecies: number[]
 	// Calculated properties
-	protected lengthFrames: number
-	protected lengthTime: number
-	protected elapsedTime: number
-	protected currentFrame: number
-	protected playing: boolean
+	private _lengthFrames: number
+	private _lengthTime: number
+	private _elapsedTime: number
+	private _currentFrame: number
+	private _playing: boolean
 
-	constructor(delays: number[], loop: boolean, resetOnAwake: boolean = true) {
+	constructor(animationModel: AnimationModel, resetOnAwake: boolean = true) {
 		super()
 
-		this.delays = delays
-		this.lengthFrames = delays.length
-		this.lengthTime = this.delays.reduce((total, delay) => total + delay, 0)
-		this.elapsedTime = 0
-		this.currentFrame = 0
-		this.loop = loop
-		this.playing = false
-		this.resetOnAwake = resetOnAwake
+		this.loop = animationModel.loop
+
+		this._delays = animationModel.delays
+		this._frameImageIndecies = animationModel.frameImageIndecies
+		this._resetOnAwake = resetOnAwake
+		// Calculated properties
+		this._lengthFrames = animationModel.delays.length
+		this._lengthTime = this._delays.reduce((total, delay) => total + delay, 0)
+		this._elapsedTime = 0
+		this._currentFrame = 0
+		this._playing = false
+	}
+
+	private findCurrentFrameIndex(): number {
+		let totalTime = 0
+		for (let i = 0; i < this._delays.length; i++) {
+			totalTime += this._delays[i]
+			if (totalTime >= this._elapsedTime) {
+				return i
+			}
+		}
+		return this._lengthFrames - 1
+	}
+
+	public getFrameImageIndex(frameIndex: number): number {
+		return this._frameImageIndecies[frameIndex]
+	}
+
+	public getCurrentFrameImageIndex(): number {
+		return this._frameImageIndecies[this._currentFrame]
 	}
 
 	public awake(): void {
 		super.awake()
 
-		if (this.resetOnAwake) {
-			this.elapsedTime = 0
-			this.currentFrame = 0
+		if (this._resetOnAwake) {
+			this._elapsedTime = 0
+			this._currentFrame = 0
 		}
-		this.playing = true
+		this._playing = true
 	}
 
 	public sleep(): void {
 		super.sleep()
 
-		this.playing = false
+		this._playing = false
 	}
 
 	public update(deltaTime: number): void {
 		super.update(deltaTime)
 
-		if (!this.playing || this.lengthFrames === 0) {
+		if (!this._playing || this._lengthFrames === 0) {
 			return
 		}
-		this.elapsedTime += deltaTime
-		if (this.elapsedTime >= this.lengthTime) {
+		this._elapsedTime += deltaTime
+		if (this._elapsedTime >= this._lengthTime) {
 			if (this.loop) {
-				this.elapsedTime = this.elapsedTime % this.lengthTime
+				this._elapsedTime = this._elapsedTime % this._lengthTime
 			} else {
-				this.elapsedTime = this.lengthTime
-				this.playing = false
+				this._elapsedTime = this._lengthTime
+				this._playing = false
 			}
 		}
-		this.currentFrame = this.findCurrentFrameIndex()
-	}
-
-	private findCurrentFrameIndex(): number {
-		let totalTime = 0
-		for (let i = 0; i < this.delays.length; i++) {
-			totalTime += this.delays[i]
-			if (totalTime >= this.elapsedTime) {
-				return i
-			}
-		}
-		return this.lengthFrames - 1
+		this._currentFrame = this.findCurrentFrameIndex()
 	}
 }

@@ -27,7 +27,8 @@ export class Tile extends Entity {
 		this.imageIndex = imageIndex
 		this.tilesetName = tilesetName
 
-		this.components.push(this.area)
+		this.addComponent(this.area)
+		this.addDrawComponent(new TileDrawComponent(this))
 	}
 
 	public static fromTileModel(tileModel: TileModel, layer: number): Tile {
@@ -42,15 +43,5 @@ export class Tile extends Entity {
 			tileModel.imageIndex,
 			tileModel.tilesetName
 		)
-	}
-
-	public awake(): void {
-		super.awake()
-
-		this.addComponent(new TileDrawComponent(this))
-	}
-
-	public update(deltaTime: number): void {
-		super.update(deltaTime)
 	}
 }

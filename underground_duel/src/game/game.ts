@@ -6,9 +6,10 @@ import { Tileset } from "./tilemap/tileset.js"
 import { TilesetManager } from "./tilemap/tileset_manager.js"
 import { TilemapModel } from "../models/tilemap/tilemap_model.js"
 import { CanvasLayerManager } from "../utils/canvas/canvas_layer_manager.js"
-import { SpriteModel } from "../models/sprites/sprite_model.js"
+import { SpriteSheetModel } from "../models/sprites/spritesheet_model.js"
 import { Player } from "./characters/player.js"
 import { Vector2D } from "../utils/math/vector2d.js"
+import { SpriteSheet } from "./characters/sprite/spritesheet.js"
 
 export class Game extends Entity {
 	private _lastTimestamp = 0
@@ -29,6 +30,7 @@ export class Game extends Entity {
 		// TilemapManager.loadTilemap(path.join(Settings.tilemapPath, "TestingTerrains.tmj"))
 		// TilemapManager.setCurrentTilemapByName("TestingTerrains")
 		// this._entities.push(TilemapManager.getCurrentTilemap())
+		// this.addComponent(new StartGameUI(document.body))
 	}
 
 	private setupWebSocket() {
@@ -61,19 +63,16 @@ export class Game extends Entity {
 			this._entities.push(tilemap)
 		})
 
-		this._socket.on("player", (playerSpriteModel: SpriteModel) => {
+		this._socket.on("player", (playerSpriteModel: SpriteSheetModel) => {
 			console.log("Player received from server:", playerSpriteModel)
 
-			const player = new Player(playerSpriteModel, new Vector2D(100, 100))
+			const player = new Player(new SpriteSheet(playerSpriteModel), new Vector2D(100, 100))
 			player.awake()
 			this._entities.push(player)
 		})
 	}
 
 	public awake(): void {
-		// this.addComponent(new GameInputComponent())
-		// this.addComponent(new StartGameUI(document.body))
-
 		super.awake()
 
 		// awake all children
@@ -123,10 +122,20 @@ export class Game extends Entity {
 
 		// this._stateMachina.update(deltaTime)
 
+		// draw after everything is updated
+		this.draw()
+
 		// // Test Lag
 		// new Promise((resolve) => setTimeout(resolve, 50)).then(() => {
 		// 	window.requestAnimationFrame(() => this.update())
 		// })
 		window.requestAnimationFrame(() => this.update())
+	}
+
+	public draw(): void {
+		// update all children
+		for (const entity of this._entities) {
+			entity.draw()
+		}
 	}
 }

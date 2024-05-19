@@ -52,6 +52,17 @@
                      "width":9,
                      "x":20,
                      "y":24
+                    }, 
+                    {
+                     "height":6.36364,
+                     "id":2,
+                     "name":"",
+                     "rotation":0,
+                     "type":"",
+                     "visible":true,
+                     "width":5.90909,
+                     "x":27.2727,
+                     "y":7.72727
                     }],
              "opacity":1,
              "type":"objectgroup",
@@ -59,7 +70,7 @@
              "x":0,
              "y":0
             },
-         "type":"Idle_Down"
+         "type":"Idle_Down,loop"
         }, 
         {
          "animation":[
@@ -111,7 +122,7 @@
              "x":0,
              "y":0
             },
-         "type":"Idle_Right"
+         "type":"Idle_Right,loop"
         }, 
         {
          "animation":[
@@ -163,7 +174,7 @@
              "x":0,
              "y":0
             },
-         "type":"Idle_Up"
+         "type":"Idle_Up,loop"
         }, 
         {
          "animation":[
@@ -215,7 +226,7 @@
              "x":0,
              "y":0
             },
-         "type":"Move_Down"
+         "type":"Move_Down,loop"
         }, 
         {
          "animation":[
@@ -267,7 +278,7 @@
              "x":0,
              "y":0
             },
-         "type":"Move_Right"
+         "type":"Move_Right,loop"
         }, 
         {
          "animation":[
@@ -319,7 +330,7 @@
              "x":0,
              "y":0
             },
-         "type":"Move_Up"
+         "type":"Move_Up,loop"
         }, 
         {
          "animation":[
