@@ -13,6 +13,10 @@ export class AreaComponent implements IComponent {
 		this.size = size ?? new Vector2D(0, 0)
 	}
 
+	public equals(other: AreaComponent): boolean {
+		return Vector2D.equals(this.loc, other.loc) && Vector2D.equals(this.size, other.size)
+	}
+
 	awake(): void {}
 	sleep(): void {}
 	update(deltaTime: number): void {}

@@ -23,21 +23,22 @@
 <!-- - Add a camera that follows the player -->
 <!-- - Fix game not resetting when server resets -->
 <!-- - Fix tile drawing between pixels causing a line between them when moving the camera -->
-- Make everything use components
+<!-- - Make everything use components -->
 - Add collision detection
     - Look into the collision stuff in Tiled
+    - 1 Polygon only per collision
 <!-- - Add animated tiles
     - Look into the animated tiles in Tiled -->
 - Sound effects and music
-- Player animations and attacks
+- Enemies
+- Health and damage
+- Player melee attacks
+- Spells/Abilities
 - GameStateManager
 - Basic start menu
 - Loading
+- Enemy Pathfinding / AI
 - Gamepad support?
-- Enemies
-    - Pathfinding / AI
-- Health and damage
-- Spells/Abilities
 - Multiplayer lobby
 - Multiplayer gameplay (client-server)
     <!-- - https://github.com/Tom32i/netcode -->

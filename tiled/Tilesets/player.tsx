@@ -7,7 +7,6 @@
  <tile id="0" type="Idle_Down,loop">
   <objectgroup draworder="index" id="2">
    <object id="1" x="20" y="24" width="9" height="17"/>
-   <object id="2" x="27.2727" y="7.72727" width="5.90909" height="6.36364"/>
   </objectgroup>
   <animation>
    <frame tileid="0" duration="100"/>
