@@ -1,5 +1,5 @@
 {
-	"name": "underground_duel",
+	"name": "underground_duel_client",
 	"version": "1.0.0",
 	"description": "",
 	"main": "public/js/server.js",
