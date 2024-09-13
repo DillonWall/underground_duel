@@ -32,5 +32,6 @@ export class ImageComponent implements IComponent {
 		this.loadImage()
 	}
 	public sleep(): void {}
+    // @ts-ignore: deltaTime is necessary in the signature for ECS system
 	public update(deltaTime: number): void {}
 }

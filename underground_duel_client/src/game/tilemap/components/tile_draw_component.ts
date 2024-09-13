@@ -29,6 +29,8 @@ export class TileDrawComponent extends DrawComponent {
 		super.draw()
 
 		const tileset = TilesetManager.getTilesetByName(this.entity.tilesetName)
+        if (tileset == undefined)
+            throw Error(`Could not get tileset by name ${this.entity.tilesetName}`)
 		if (!tileset.image.loaded) {
 			if (Settings.debug.enabled) {
 				console.warn("Tileset image not loaded yet.")

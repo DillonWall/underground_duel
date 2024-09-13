@@ -16,7 +16,7 @@ export class TilemapManager {
 		this._tilemaps.delete(tilemapName)
 	}
 
-	public static getCurrentTilemap(): Tilemap {
+	public static getCurrentTilemap(): Tilemap | undefined {
 		return this._tilemaps.get(this._currentTilemapName)
 	}
 
@@ -24,7 +24,7 @@ export class TilemapManager {
 		return this._currentTilemapName
 	}
 
-	public static getTilemapByName(tilemapName: string): Tilemap {
+	public static getTilemapByName(tilemapName: string): Tilemap | undefined {
 		return this._tilemaps.get(tilemapName)
 	}
 

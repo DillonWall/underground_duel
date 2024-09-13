@@ -14,7 +14,7 @@ export class CharacterDrawComponent extends DrawComponent {
 
 	constructor(entity: Character, layer: number, drawCenter: boolean) {
 		super(entity)
-
+        this.entity = entity
 		this.layer = layer
 		this.drawCenter = drawCenter
 	}
@@ -30,6 +30,8 @@ export class CharacterDrawComponent extends DrawComponent {
 		}
 
 		try {
+            if (this.entity.currentAnimation == undefined)
+                return
 			const sLoc = this.entity.spriteSheet.imageDivider.getSubVectorLocation(
 				this.entity.currentAnimation.getCurrentFrameImageIndex()
 			)

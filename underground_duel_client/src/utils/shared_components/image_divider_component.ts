@@ -40,5 +40,6 @@ export class ImageDividerComponent implements IComponent {
 
 	public awake(): void {}
 	public sleep(): void {}
+    // @ts-ignore: deltaTime is necessary in the signature for ECS system
 	public update(deltaTime: number): void {}
 }

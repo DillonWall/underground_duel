@@ -19,5 +19,6 @@ export class AreaComponent implements IComponent {
 
 	awake(): void {}
 	sleep(): void {}
+    // @ts-ignore: deltaTime is necessary in the signature for ECS system
 	update(deltaTime: number): void {}
 }

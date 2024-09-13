@@ -20,7 +20,7 @@ export class Sprite extends Entity {
 		this.animationMap = new AnimationMapComponent<string>(this, spriteSheet.animations)
 		this.addComponent(this.animationMap)
 
-		this._currentAnimationKey = this.animationMap.animations.keys().next().value // Default to the first animation
+		this._currentAnimationKey = this.animationMap.animations.keys().next().value! // Default to the first animation
 	}
 
 	public setAnimation(animationKey: string): void {

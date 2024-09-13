@@ -11,7 +11,7 @@ export class TilesetManager {
 		this._tilesets.set(tileset.name, tileset)
 	}
 
-	public static getTilesetByName(tilesetName: string): Tileset {
+	public static getTilesetByName(tilesetName: string): Tileset | undefined {
 		return this._tilesets.get(tilesetName)
 	}
 

@@ -1,4 +1,3 @@
-import * as path from "../path.ts"
 import { TilesetModel } from "../../models/tilemap/tileset_model.ts"
 import { AnimationModel } from "../../models/animation/animation_model.ts"
 import { Settings } from "../../settings/settings.ts"

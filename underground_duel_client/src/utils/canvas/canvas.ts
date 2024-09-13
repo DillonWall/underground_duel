@@ -137,12 +137,15 @@ export class Canvas implements IAwake {
 	}
 
 	public drawImageCenter(
-		image: HTMLImageElement,
+		image: HTMLImageElement | null,
 		sLoc: Vector2D,
 		sSize: Vector2D,
 		dSize: Vector2D,
 		flip: boolean = false
 	): void {
+        if (!image)
+            return
+
 		dSize = Vector2D.multiply(dSize, Settings.video.scale)
 		const dLoc = new Vector2D(
 			Settings.canvas.canvasWidth / 2 - dSize.x / 2,

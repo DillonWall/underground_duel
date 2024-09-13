@@ -143,5 +143,6 @@ export class PlayerKeyPressComponent implements IComponent {
 		this.unregisterControls()
 	}
 
+    // @ts-ignore: deltaTime is necessary in the signature for ECS system
 	update(deltaTime: number): void {}
 }

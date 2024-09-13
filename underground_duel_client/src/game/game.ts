@@ -1,4 +1,3 @@
-import * as path from "../utils/path.ts"
 import { Entity } from "../utils/ecs/entity.ts"
 import { Tilemap } from "./tilemap/tilemap.ts"
 import { TilemapModel } from "../models/tilemap/tilemap_model.ts"
