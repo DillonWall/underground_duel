@@ -1,6 +1,6 @@
-import { IComponent } from "../ecs/component.js"
-import { Entity } from "../ecs/entity.js"
-import { Vector2D } from "../math/vector2d.js"
+import { IComponent } from "../ecs/component.ts"
+import { Entity } from "../ecs/entity.ts"
+import { Vector2D } from "../math/vector2d.ts"
 
 export class AreaComponent implements IComponent {
 	entity: Entity | null

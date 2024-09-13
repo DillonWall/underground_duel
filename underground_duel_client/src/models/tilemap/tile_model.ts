@@ -1,4 +1,4 @@
-import { Vector2D } from "../../utils/math/vector2d.js"
+import { Vector2D } from "../../utils/math/vector2d.ts"
 
 export class TileModel {
 	constructor(

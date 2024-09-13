@@ -1,7 +1,7 @@
-import { IComponent } from "../ecs/component.js"
-import { Entity } from "../ecs/entity.js"
-import { Vector2D } from "../math/vector2d.js"
-import { AreaComponent } from "./area_component.js"
+import { IComponent } from "../ecs/component.ts"
+import { Entity } from "../ecs/entity.ts"
+import { Vector2D } from "../math/vector2d.ts"
+import { AreaComponent } from "./area_component.ts"
 
 export class MovementComponent implements IComponent {
 	public entity: Entity

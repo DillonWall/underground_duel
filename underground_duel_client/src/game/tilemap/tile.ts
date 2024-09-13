@@ -1,8 +1,8 @@
-import { TileModel } from "../../models/tilemap/tile_model.js"
-import { Entity } from "../../utils/ecs/entity.js"
-import { Vector2D } from "../../utils/math/vector2d.js"
-import { AreaComponent } from "../../utils/shared_components/area_component.js"
-import { TileDrawComponent } from "./components/tile_draw_component.js"
+import { TileModel } from "../../models/tilemap/tile_model.ts"
+import { Entity } from "../../utils/ecs/entity.ts"
+import { Vector2D } from "../../utils/math/vector2d.ts"
+import { AreaComponent } from "../../utils/shared_components/area_component.ts"
+import { TileDrawComponent } from "./components/tile_draw_component.ts"
 
 export class Tile extends Entity {
 	public area: AreaComponent
@@ -31,7 +31,7 @@ export class Tile extends Entity {
 		this.addDrawComponent(new TileDrawComponent(this))
 	}
 
-	public static fromTileModel(tileModel: TileModel, layer: number): Tile {
+	public static fromTileModel(tileModel: TileModel | null, layer: number): Tile | null {
 		if (!tileModel) {
 			return null
 		}

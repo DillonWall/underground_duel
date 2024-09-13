@@ -1,6 +1,6 @@
-import { TileModel } from "./tile_model.js"
-import { TilesetModel } from "./tileset_model.js"
+import { TileModel } from "./tile_model.ts"
+import { TilesetModel } from "./tileset_model.ts"
 
 export class TilemapModel {
-	constructor(public name: string, public tilesets: TilesetModel[], public tileLayers: TileModel[][][]) {}
+	constructor(public name: string, public tilesets: TilesetModel[], public tileLayers: (TileModel | null)[][][]) {}
 }

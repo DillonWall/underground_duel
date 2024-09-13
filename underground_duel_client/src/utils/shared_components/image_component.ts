@@ -1,14 +1,14 @@
-import { IComponent } from "../ecs/component.js"
-import { Entity } from "../ecs/entity.js"
+import { IComponent } from "../ecs/component.ts"
+import { Entity } from "../ecs/entity.ts"
 
 export class ImageComponent implements IComponent {
 	public entity: Entity
 	public loaded: boolean = false
-	private _image: HTMLImageElement
+	private _image: HTMLImageElement | undefined
 	private _imageSrc: string
 
 	public get image(): HTMLImageElement | null {
-		return this.loaded ? this._image : null
+		return this.loaded ? this._image! : null
 	}
 
 	constructor(entity: Entity, imageSrc: string) {

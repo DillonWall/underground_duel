@@ -1,4 +1,4 @@
-import { Tilemap } from "./tilemap.js"
+import { Tilemap } from "./tilemap.ts"
 
 export class TilemapManager {
 	private static _tilemaps: Map<string, Tilemap> = new Map() // maps tilemap name to the imported tilemap for quick access

@@ -1,9 +1,9 @@
-import { Vector2D } from "../../utils/math/vector2d.js"
-import { PlayerKeyPressComponent } from "./components/player_keypress_component.js"
-import { Settings } from "../../settings/settings.js"
-import { Camera } from "../camera.js"
-import { Character } from "./character.js"
-import { SpriteSheet } from "./sprite/spritesheet.js"
+import { Vector2D } from "../../utils/math/vector2d.ts"
+import { PlayerKeyPressComponent } from "./components/player_keypress_component.ts"
+import { Settings } from "../../settings/settings.ts"
+import { Camera } from "../camera.ts"
+import { Character } from "./character.ts"
+import { SpriteSheet } from "./sprite/spritesheet.ts"
 
 export class Player extends Character {
 	constructor(playerSpriteSheet: SpriteSheet, loc: Vector2D) {

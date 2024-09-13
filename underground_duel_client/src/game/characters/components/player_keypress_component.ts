@@ -1,7 +1,7 @@
-import { IComponent } from "../../../utils/ecs/component.js"
-import { Vector2D } from "../../../utils/math/vector2d.js"
-import { Player } from "../player.js"
-import { Settings } from "../../../settings/settings.js"
+import { IComponent } from "../../../utils/ecs/component.ts"
+import { Vector2D } from "../../../utils/math/vector2d.ts"
+import { Player } from "../player.ts"
+import { Settings } from "../../../settings/settings.ts"
 
 export class PlayerKeyPressComponent implements IComponent {
 	entity: Player

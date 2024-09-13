@@ -1,9 +1,9 @@
-import { Sprite } from "./sprite/sprite.js"
-import { AreaComponent } from "../../utils/shared_components/area_component.js"
-import { MovementComponent } from "../../utils/shared_components/movement_component.js"
-import { CharacterDrawComponent } from "./components/character_draw_component.js"
-import { Vector2D } from "../../utils/math/vector2d.js"
-import { SpriteSheet } from "./sprite/spritesheet.js"
+import { Sprite } from "./sprite/sprite.ts"
+import { AreaComponent } from "../../utils/shared_components/area_component.ts"
+import { MovementComponent } from "../../utils/shared_components/movement_component.ts"
+import { CharacterDrawComponent } from "./components/character_draw_component.ts"
+import { Vector2D } from "../../utils/math/vector2d.ts"
+import { SpriteSheet } from "./sprite/spritesheet.ts"
 
 enum CharacterAnimationList {
 	IdleDown = "Idle_Down",

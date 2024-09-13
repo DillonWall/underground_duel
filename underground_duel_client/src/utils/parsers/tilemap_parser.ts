@@ -1,22 +1,19 @@
-import path from "path"
-import fs from "fs"
-import { parseTilesetFile } from "./tileset_parser.js"
-import { Vector2D } from "../utils/math/vector2d.js"
-import { TilesetModel } from "../models/tilemap/tileset_model.js"
-import { TileModel } from "../models/tilemap/tile_model.js"
-import { TilemapModel } from "../models/tilemap/tilemap_model.js"
-import { ServerSettings } from "../settings/server_settings.js"
-import { Settings } from "../settings/settings.js"
+import * as path from "../path.ts"
+import { parseTilesetFile } from "./tileset_parser.ts"
+import { Vector2D } from "../../utils/math/vector2d.ts"
+import { TilesetModel } from "../../models/tilemap/tileset_model.ts"
+import { TileModel } from "../../models/tilemap/tile_model.ts"
+import { TilemapModel } from "../../models/tilemap/tilemap_model.ts"
+import { Settings } from "../../settings/settings.ts"
 
-export async function parseTilemapFile(fileSrc: string): Promise<TilemapModel> {
+export async function parseTilemapFile(fileName: string): Promise<TilemapModel> {
 	const tempShiftY = -150
 	const tempShiftX = -50
 
 	let tilesets: TilesetModel[] = []
-	const name = path.basename(fileSrc, ".tmj")
-	let tileLayers: TileModel[][][] = []
+	let tileLayers: (TileModel | null)[][][] = []
 
-	const tilemapJson = JSON.parse(fs.readFileSync(fileSrc, "utf-8"))
+	const tilemapJson = await import(`../../assets/tilemaps/${fileName}.json`)
 	const layers = tilemapJson.layers
 
 	// Initialize all tilesets and extract the names and their starting GID
@@ -25,23 +22,22 @@ export async function parseTilemapFile(fileSrc: string): Promise<TilemapModel> {
 	for (let i = 0; i < tilemapJson.tilesets.length; i++) {
 		const tileset = tilemapJson.tilesets[i]
 		const tilesetName = path.basename(tileset.source, ".tsx")
-		const tilesetPath = path.join(ServerSettings.tilesetPath, tilesetName + ".tsj")
-		tilesets.push(await parseTilesetFile(tilesetPath))
+		tilesets.push(await parseTilesetFile(tilesetName))
 		tilesetNames.push(tilesetName)
 		tilesetGIDs.push(tileset.firstgid)
 	}
 
 	// Initialize all layers of tiles in the tilemap
 	for (let l = 0; l < layers.length; l++) {
-		let layer: TileModel[][] = []
+		let layer: (TileModel | null)[][] = []
 		for (let y = 0; y < tilemapJson.height; y++) {
-			let row: TileModel[] = []
+			let row: (TileModel | null)[] = []
 			for (let x = 0; x < tilemapJson.width; x++) {
 				// Note: We need to shift based on GID
 				let gid = layers[l].data[y * tilemapJson.width + x]
 				if (gid <= 0) {
-					row.push(null)
-					continue
+				    row.push(null)
+                    continue
 				}
 				let tilesetName = ""
 				let imageIndex = gid
@@ -53,7 +49,7 @@ export async function parseTilemapFile(fileSrc: string): Promise<TilemapModel> {
 					}
 				}
 				if (tilesetName === "") {
-					throw new Error(`Tileset not found for tile with GID ${gid} when parsing tilemap ${this._name}`)
+					throw new Error(`Tileset not found for tile with GID ${gid} when parsing tilemap file: ${fileName}`)
 				}
 				row.push(
 					new TileModel(
@@ -70,5 +66,5 @@ export async function parseTilemapFile(fileSrc: string): Promise<TilemapModel> {
 		tileLayers.push(layer)
 	}
 
-	return new TilemapModel(name, tilesets, tileLayers)
+	return new TilemapModel(fileName, tilesets, tileLayers)
 }

@@ -1,4 +1,6 @@
 export const Settings = Object.freeze({
+	tilesetImagePath: "/src/assets/tilesets/images/",
+	spriteSheetImagePath: "/src/assets/spritesheets/images/",
 	debug: {
 		enabled: false,
 		showFps: true,

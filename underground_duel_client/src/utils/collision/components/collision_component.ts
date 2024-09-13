@@ -1,7 +1,7 @@
-import { IComponent } from "../../ecs/component.js"
-import { Entity } from "../../ecs/entity.js"
-import { Vector2D } from "../../math/vector2d.js"
-import { AreaComponent } from "../../shared_components/area_component.js"
+import { IComponent } from "../../ecs/component.ts"
+import { Entity } from "../../ecs/entity.ts"
+import { Vector2D } from "../../math/vector2d.ts"
+import { AreaComponent } from "../../shared_components/area_component.ts"
 import { Polygon, Vector, testPolygonPolygon, Response } from "sat"
 
 export abstract class CollisionComponent implements IComponent {

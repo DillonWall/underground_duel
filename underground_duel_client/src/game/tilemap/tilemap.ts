@@ -5,14 +5,14 @@
 // Look into Phaser library
 // We will generate the tilemaps dynamically (not images)
 
-import { TilemapModel } from "../../models/tilemap/tilemap_model.js"
-import { Entity } from "../../utils/ecs/entity.js"
-import { Vector2D } from "../../utils/math/vector2d.js"
-import { Tile } from "./tile.js"
+import { TilemapModel } from "../../models/tilemap/tilemap_model.ts"
+import { Entity } from "../../utils/ecs/entity.ts"
+import { Vector2D } from "../../utils/math/vector2d.ts"
+import { Tile } from "./tile.ts"
 
 export class Tilemap extends Entity {
 	private _name: string
-	private _tileLayers: Tile[][][] = []
+	private _tileLayers: (Tile | null)[][][] = []
 
 	public get name() {
 		return this._name
@@ -84,11 +84,11 @@ export class Tilemap extends Entity {
 		}
 	}
 
-	public getTile(layer: number, loc: Vector2D): Tile {
+	public getTile(layer: number, loc: Vector2D): Tile | null {
 		return this._tileLayers[layer][loc.y][loc.x]
 	}
 
-	public getTiles(layer: number): Tile[][] {
+	public getTiles(layer: number): (Tile | null)[][] {
 		return this._tileLayers[layer]
 	}
 }

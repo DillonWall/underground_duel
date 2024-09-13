@@ -1,9 +1,10 @@
-import { Settings } from "../../settings/settings.js"
-import { Entity } from "../../utils/ecs/entity.js"
-import { TilesetModel } from "../../models/tilemap/tileset_model.js"
-import { ImageComponent } from "../../utils/shared_components/image_component.js"
-import { AnimationMapComponent } from "../../utils/shared_components/animation_map_component.js"
-import { ImageDividerComponent } from "../../utils/shared_components/image_divider_component.js"
+import * as path from "../../utils/path.ts"
+import { Settings } from "../../settings/settings.ts"
+import { Entity } from "../../utils/ecs/entity.ts"
+import { TilesetModel } from "../../models/tilemap/tileset_model.ts"
+import { ImageComponent } from "../../utils/shared_components/image_component.ts"
+import { AnimationMapComponent } from "../../utils/shared_components/animation_map_component.ts"
+import { ImageDividerComponent } from "../../utils/shared_components/image_divider_component.ts"
 
 export class Tileset extends Entity {
 	public name: string
@@ -16,7 +17,7 @@ export class Tileset extends Entity {
 
 		this.name = tilesetModel.name
 
-		this.image = new ImageComponent(this, tilesetModel.imageSrc)
+		this.image = new ImageComponent(this, path.join(Settings.tilesetImagePath, tilesetModel.name + ".png"))
 		this.imageDivider = new ImageDividerComponent(
 			this,
 			Settings.tile.tileSize,

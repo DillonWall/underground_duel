@@ -1,4 +1,4 @@
-import { lerp } from "./lerp.js"
+import { lerp } from "./lerp.ts"
 
 // Contains an X and a Y describing a vector. Used for points, indecies, velocity, etc
 export class Vector2D {

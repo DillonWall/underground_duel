@@ -1,16 +1,23 @@
 {
-	"compilerOptions": {
-		"module": "NodeNext" /* Specify what module code is generated. */,
-		"moduleResolution": "NodeNext" /* Specify how TypeScript looks up a file from a given module specifier. */,
-		"target": "ES2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-		"rootDir": "src" /* Specify the root folder within your source files. */,
-		"outDir": "public/js" /* Specify an output folder for all emitted files. */,
-		// "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
-		"sourceMap": true /* Create source map files for emitted JavaScript files. */,
-		// "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-		// "strict": true /* Enable all strict type-checking options. */,
-		// "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
-		"esModuleInterop": true
-	},
-	"include": ["src/*"]
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
 }

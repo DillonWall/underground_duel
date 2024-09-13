@@ -1,7 +1,7 @@
-import { Entity } from "../../../utils/ecs/entity.js"
-import { SpriteSheet } from "./spritesheet.js"
-import { Animation } from "../../../utils/animation/animation.js"
-import { AnimationMapComponent } from "../../../utils/shared_components/animation_map_component.js"
+import { Entity } from "../../../utils/ecs/entity.ts"
+import { SpriteSheet } from "./spritesheet.ts"
+import { Animation } from "../../../utils/animation/animation.ts"
+import { AnimationMapComponent } from "../../../utils/shared_components/animation_map_component.ts"
 
 export class Sprite extends Entity {
 	public spriteSheet: SpriteSheet

@@ -1,8 +1,6 @@
-import { Game } from "./game/game.js"
+import { Game } from "./game/game.ts"
 
-// @ts-ignore: io is imported via html, no need to require an import
-const socket = io("ws://localhost:3000")
+let game = new Game()
 
-socket.on("connect", () => {})
-
-new Game(socket).awake()
+await game.init()
+game.awake()

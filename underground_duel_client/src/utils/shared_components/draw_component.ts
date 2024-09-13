@@ -1,11 +1,11 @@
-import { Entity } from "../ecs/entity.js"
-import { IComponent } from "../ecs/component.js"
-import { IDraw } from "../lifecycle/draw.js"
-import { Settings } from "../../settings/settings.js"
+import { Entity } from "../ecs/entity.ts"
+import { IComponent } from "../ecs/component.ts"
+import { IDraw } from "../lifecycle/draw.ts"
+import { Settings } from "../../settings/settings.ts"
 
 export abstract class DrawComponent implements IComponent, IDraw {
 	entity: Entity
-	private _sleeping: boolean
+	private _sleeping: boolean = false
 
 	constructor(entity: Entity) {
 		this.entity = entity
@@ -19,6 +19,7 @@ export abstract class DrawComponent implements IComponent, IDraw {
 		this._sleeping = true
 	}
 
+    // @ts-ignore: deltaTime is necessary in the signature for ECS system
 	update(deltaTime: number): void {
 		if (this._sleeping) {
 			return

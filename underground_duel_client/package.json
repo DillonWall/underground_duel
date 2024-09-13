@@ -1,31 +1,19 @@
 {
-	"name": "underground_duel_client",
-	"version": "1.0.0",
-	"description": "",
-	"main": "public/js/server.js",
-	"type": "module",
-	"scripts": {
-		"clean": "rimraf public/js/",
-		"nodemon": "start http://localhost:3000 && nodemon public/js/server.js",
-		"tsc-watch": "tsc --watch",
-		"build": "npm run clean && tsc",
-		"dev": "npm run clean && concurrently --kill-others \"npm:tsc-watch\" \"npm:nodemon\""
-	},
-	"author": "Dillon Wall",
-	"license": "ISC",
-	"devDependencies": {
-		"@types/node": "^20.12.8",
-		"@types/sat": "^0.0.35",
-		"@web/dev-server": "^0.4.4",
-		"concurrently": "^8.2.2",
-		"rimraf": "^5.0.5",
-		"typescript": "^5.4.5"
-	},
-	"dependencies": {
-		"app-root-path": "^3.1.0",
-		"express": "^4.19.2",
-		"nodemon": "^3.1.0",
-		"sat": "^0.9.0",
-		"socket.io": "^4.7.5"
-	}
+  "name": "underground_duel_client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/sat": "^0.0.35",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  },
+  "dependencies": {
+    "sat": "^0.9.0"
+  }
 }

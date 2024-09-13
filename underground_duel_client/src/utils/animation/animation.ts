@@ -1,5 +1,5 @@
-import { AnimationModel } from "../../models/animation/animation_model.js"
-import { Entity } from "../ecs/entity.js"
+import { AnimationModel } from "../../models/animation/animation_model.ts"
+import { Entity } from "../ecs/entity.ts"
 
 export class Animation extends Entity {
 	public loop: boolean

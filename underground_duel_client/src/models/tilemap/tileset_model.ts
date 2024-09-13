@@ -1,13 +1,12 @@
-import { ColliderModel } from "../sprites/collider_model.js"
-import { AnimationModel } from "../animation/animation_model.js"
+import { ColliderModel } from "../sprites/collider_model.ts"
+import { AnimationModel } from "../animation/animation_model.ts"
 
 export class TilesetModel {
 	constructor(
 		public name: string,
-		public imageSrc: string,
 		public tileCountX: number,
 		public tileCountY: number,
 		public animations: Array<Array<number | AnimationModel>>,
-		public collisions: Array<Array<number | ColliderModel>>
+		public collisions: Array<ColliderModel>
 	) {}
 }

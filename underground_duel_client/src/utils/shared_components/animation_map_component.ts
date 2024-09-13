@@ -1,7 +1,7 @@
-import { IComponent } from "../ecs/component.js"
-import { Entity } from "../ecs/entity.js"
-import { AnimationModel } from "../../models/animation/animation_model.js"
-import { Animation } from "../animation/animation.js"
+import { IComponent } from "../ecs/component.ts"
+import { Entity } from "../ecs/entity.ts"
+import { AnimationModel } from "../../models/animation/animation_model.ts"
+import { Animation } from "../animation/animation.ts"
 
 export class AnimationMapComponent<KeyType> implements IComponent {
 	public entity: Entity

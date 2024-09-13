@@ -1,8 +1,8 @@
-import { IAwake } from "../lifecycle/awake.js"
-import { IDraw } from "../lifecycle/draw.js"
-import { IUpdate } from "../lifecycle/update.js"
-import { DrawComponent } from "../shared_components/draw_component.js"
-import { IComponent } from "./component.js"
+import { IAwake } from "../lifecycle/awake.ts"
+import { IDraw } from "../lifecycle/draw.ts"
+import { IUpdate } from "../lifecycle/update.ts"
+import { DrawComponent } from "../shared_components/draw_component.ts"
+import { IComponent } from "./component.ts"
 
 type AbstractComponent<T> = Function & { prototype: T }
 type Type<T> = AbstractComponent<T> | { new (...args: unknown[]): T }

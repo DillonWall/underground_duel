@@ -1,18 +1,19 @@
-import { Settings } from "../../../settings/settings.js"
-import { CanvasLayerManager } from "../../../utils/canvas/canvas_layer_manager.js"
-import { Color } from "../../../utils/color/color.js"
-import { Vector2D } from "../../../utils/math/vector2d.js"
-import { Camera } from "../../camera.js"
-import { Tile } from "../tile.js"
-import { TilesetManager } from "../tileset_manager.js"
-import { DrawComponent } from "../../../utils/shared_components/draw_component.js"
-import { Tileset } from "../tileset.js"
+import { Settings } from "../../../settings/settings.ts"
+import { CanvasLayerManager } from "../../../utils/canvas/canvas_layer_manager.ts"
+import { Color } from "../../../utils/color/color.ts"
+import { Vector2D } from "../../../utils/math/vector2d.ts"
+import { Camera } from "../../camera.ts"
+import { Tile } from "../tile.ts"
+import { TilesetManager } from "../tileset_manager.ts"
+import { DrawComponent } from "../../../utils/shared_components/draw_component.ts"
+import { Tileset } from "../tileset.ts"
 
 export class TileDrawComponent extends DrawComponent {
 	override entity: Tile
 
 	constructor(entity: Tile) {
 		super(entity)
+        this.entity = entity
 	}
 
 	private getImageIndexBasedOnAnimation(tileset: Tileset, index: number): number {

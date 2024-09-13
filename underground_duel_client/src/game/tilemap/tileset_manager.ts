@@ -1,4 +1,4 @@
-import { Tileset } from "./tileset.js"
+import { Tileset } from "./tileset.ts"
 
 export class TilesetManager {
 	private static _tilesets: Map<string, Tileset> = new Map() // maps tileset name to the imported tileset for quick access

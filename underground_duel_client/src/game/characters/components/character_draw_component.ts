@@ -1,10 +1,10 @@
-import { Settings } from "../../../settings/settings.js"
-import { CanvasLayerManager } from "../../../utils/canvas/canvas_layer_manager.js"
-import { Vector2D } from "../../../utils/math/vector2d.js"
-import { Color } from "../../../utils/color/color.js"
-import { Character } from "../character.js"
-import { Camera } from "../../camera.js"
-import { DrawComponent } from "../../../utils/shared_components/draw_component.js"
+import { Settings } from "../../../settings/settings.ts"
+import { CanvasLayerManager } from "../../../utils/canvas/canvas_layer_manager.ts"
+import { Vector2D } from "../../../utils/math/vector2d.ts"
+import { Color } from "../../../utils/color/color.ts"
+import { Character } from "../character.ts"
+import { Camera } from "../../camera.ts"
+import { DrawComponent } from "../../../utils/shared_components/draw_component.ts"
 
 export class CharacterDrawComponent extends DrawComponent {
 	override entity: Character

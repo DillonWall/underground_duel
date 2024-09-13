@@ -1,6 +1,6 @@
-import { Settings } from "../../settings/settings.js"
-import { Vector2D } from "../math/vector2d.js"
-import { Canvas } from "./canvas.js"
+import { Settings } from "../../settings/settings.ts"
+import { Vector2D } from "../math/vector2d.ts"
+import { Canvas } from "./canvas.ts"
 
 export class CanvasLayerManager {
 	private static _layers: Canvas[]
