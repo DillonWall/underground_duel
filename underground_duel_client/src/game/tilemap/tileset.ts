@@ -1,4 +1,3 @@
-import * as path from "../../utils/path.ts"
 import { Settings } from "../../settings/settings.ts"
 import { Entity } from "../../utils/ecs/entity.ts"
 import { TilesetModel } from "../../models/tilemap/tileset_model.ts"
@@ -17,7 +16,8 @@ export class Tileset extends Entity {
 
 		this.name = tilesetModel.name
 
-		this.image = new ImageComponent(this, path.join(Settings.tilesetImagePath, tilesetModel.name + ".png"))
+        const imgUrl: string = new URL(`../../assets/tilesets/images/${tilesetModel.name}.png`, import.meta.url).href
+		this.image = new ImageComponent(this, imgUrl)
 		this.imageDivider = new ImageDividerComponent(
 			this,
 			Settings.tile.tileSize,
