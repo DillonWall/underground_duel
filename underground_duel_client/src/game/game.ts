@@ -15,6 +15,7 @@ import { parseSpriteFile } from "../utils/parsers/sprite_parser.ts"
 export class Game extends Entity {
     private _lastTimestamp = 0
     private _entities: Entity[] = []
+    private _webSocket: WebSocket | null = null
 
     public get entities(): Entity[] {
         return this._entities
@@ -32,8 +33,8 @@ export class Game extends Entity {
             ])
 
         this.setupTiles(tilemapModel)
-        this.setupPlayer(playerSpriteSheetModel)
         this.setupWebSocket()
+        this.setupPlayer(playerSpriteSheetModel)
     }
 
     private setupTiles(tilemapModel: TilemapModel) {
@@ -53,23 +54,36 @@ export class Game extends Entity {
         this._entities.push(tilemap)
     }
 
-    private setupPlayer(playerSpriteSheetModel: SpriteSheetModel) {
-        const player = new Player(new SpriteSheet(playerSpriteSheetModel), new Vector2D(100, 100))
-        player.awake()
-        this._entities.push(player)
+    private setupWebSocket() {
+        this._webSocket = new WebSocket("ws://localhost:8080/ws")
+        if (this._webSocket == null)
+            throw Error("Could not create WebSocket")
+
+    	this._webSocket.onopen = () => {
+    		console.log("Opening socket! Sending a message to server...")
+            this._webSocket!.send(JSON.stringify({MsgType:"Hi server!"}))
+    	}
+
+        this._webSocket.onmessage = (event) => {
+            console.log("Received message: ", event.data)
+        }
+
+    	this._webSocket.onclose = (event) => {
+    		console.log("Closing socket, event: ", event)
+    	}
+
+        this._webSocket.onerror = (event) => {
+            console.log("Socket error: ", event)
+        }
     }
 
-    private setupWebSocket() {
-    //const socket = io("ws://localhost:3000")
-    //	this._socket.on("message", (message: string) => {
-    //		console.log("Message received from server:", message)
-    //	})
-    //
-    //	this._socket.on("connected", () => {
-    //		console.log("Reconnected to server")
-    //		// this._stateMachina.restart()
-    //		this._entities = []
-    //	})
+    private setupPlayer(playerSpriteSheetModel: SpriteSheetModel) {
+        if (this._webSocket == null) {
+            throw Error("WebSocket must be setup before setting up player")
+        }
+        const player = new Player(new SpriteSheet(playerSpriteSheetModel), new Vector2D(100, 100), this._webSocket)
+        player.awake()
+        this._entities.push(player)
     }
 
     public awake(): void {

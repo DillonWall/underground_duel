@@ -74,7 +74,7 @@ export class Vector2D {
 		return new Vector2D(Math.round(a.x), Math.round(a.y))
 	}
 
-	public static equals(a: Vector2D, b: Vector2D): boolean {
+	public static areEqual(a: Vector2D, b: Vector2D): boolean {
 		return a.x == b.x && a.y == b.y
 	}
 }

@@ -6,15 +6,27 @@ import { Character } from "./character.ts"
 import { SpriteSheet } from "./sprite/spritesheet.ts"
 
 export class Player extends Character {
-	constructor(playerSpriteSheet: SpriteSheet, loc: Vector2D) {
+    private _webSocket: WebSocket
+
+	constructor(playerSpriteSheet: SpriteSheet, loc: Vector2D, webSocket: WebSocket) {
 		super(playerSpriteSheet, loc, Settings.player.moveSpeed, Settings.canvas.playerLayer, true)
 
+        this._webSocket = webSocket
 		this.addComponent(new PlayerKeyPressComponent(this))
 		Camera.setTarget(this.area_c)
 	}
 
 	public update(deltaTime: number): void {
 		super.update(deltaTime)
+
+        if (this.movement_c.velocity != 0 && !Vector2D.areEqual(this.movement_c.direction, this.movement_c.prevDirection)) {
+            const moveData = {
+                MsgType: "move",
+                X: this.area_c.loc.x,
+                Y: this.area_c.loc.y,
+            }
+            this._webSocket.send(JSON.stringify(moveData))
+        }
 
 		Camera.update()
 	}

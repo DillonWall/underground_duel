@@ -14,7 +14,7 @@ export class AreaComponent implements IComponent {
 	}
 
 	public equals(other: AreaComponent): boolean {
-		return Vector2D.equals(this.loc, other.loc) && Vector2D.equals(this.size, other.size)
+		return Vector2D.areEqual(this.loc, other.loc) && Vector2D.areEqual(this.size, other.size)
 	}
 
 	awake(): void {}
