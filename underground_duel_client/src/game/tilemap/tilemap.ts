@@ -85,7 +85,7 @@ export class Tilemap extends Entity {
 	}
 
 	public getTile(layer: number, loc: Vector2D): Tile | null {
-		return this._tileLayers[layer][loc.y][loc.x]
+		return this._tileLayers[layer][loc.Y][loc.X]
 	}
 
 	public getTiles(layer: number): (Tile | null)[][] {

@@ -51,17 +51,17 @@ export class MovementComponent implements IComponent {
 	}
 
 	private validateDirection(): void {
-		if (this.direction.x > 1) {
-			this.direction.x = 1
+		if (this.direction.X > 1) {
+			this.direction.X = 1
 		}
-		if (this.direction.x < -1) {
-			this.direction.x = -1
+		if (this.direction.X < -1) {
+			this.direction.X = -1
 		}
-		if (this.direction.y > 1) {
-			this.direction.y = 1
+		if (this.direction.Y > 1) {
+			this.direction.Y = 1
 		}
-		if (this.direction.y < -1) {
-			this.direction.y = -1
+		if (this.direction.Y < -1) {
+			this.direction.Y = -1
 		}
 	}
 

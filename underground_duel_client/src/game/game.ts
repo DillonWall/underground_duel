@@ -12,11 +12,13 @@ import { Vector2D } from "../utils/math/vector2d.ts"
 import { parseTilemapFile } from "../utils/parsers/tilemap_parser.ts"
 import { parseSpriteFile } from "../utils/parsers/sprite_parser.ts"
 import { Settings } from "../settings/settings.ts"
+import { OtherPlayer } from "./characters/otherplayer.ts"
 
 export class Game extends Entity {
     private _lastTimestamp = 0
     private _entities: Entity[] = []
     private _webSocket: WebSocket | null = null
+    private _playerId: number
 
     public get entities(): Entity[] {
         return this._entities
@@ -55,7 +57,7 @@ export class Game extends Entity {
         this._entities.push(tilemap)
     }
 
-    private setupWebSocket() {
+    private setupWebSocket(otherPlayerSpriteSheet: SpriteSheet) {
         this._webSocket = new WebSocket("ws://localhost:8080/ws")
         if (this._webSocket == null)
             throw Error("Could not create WebSocket")
@@ -67,6 +69,19 @@ export class Game extends Entity {
 
         this._webSocket.onmessage = (event) => {
             console.log("Received message: ", event.data)
+            const dataObj = JSON.parse(event.data)
+            if (dataObj.PlayerId != undefined) {
+                this._playerId = dataObj.PlayerId
+            } else {
+                // dataObj is a TickInfo object
+                for (let [playerId, playerData] of dataObj.PlayerDatas) {
+                    if (!otherPlayers.has(playerId)) {
+                        otherPlayers[playerId] = new OtherPlayer(parseSpriteFile("player"), playerData)
+                    } else {
+                        otherPlayers[playerId].updateData(playerData)
+                    }
+                }
+            }
         }
 
         this._webSocket.onclose = (event) => {
@@ -108,17 +123,17 @@ export class Game extends Entity {
     public async update(): Promise<void> {
         // FPS calculations
         let now = Date.now()
-        //const deltaTimeMS = now - this._lastTimestamp
-        //const targetDeltaTimeMS = (1 / Settings.video.fpsCap) * 1000
-        //if (deltaTimeMS < targetDeltaTimeMS) {
-        //    // we are too fast, sleep for the difference to reach target FPS
-        //    //const sleepTimeMS = targetDeltaTimeMS - deltaTimeMS
-        //    //console.log(`Sleeping for ${sleepTimeMS} ms`)
-        //    //await new Promise((resolve) => setTimeout(resolve, 0.01))
-        //}
-        //now = Date.now()
+        const deltaTimeMS = now - this._lastTimestamp
+        const targetDeltaTimeMS = (1 / Settings.video.fpsCap) * 1000
+        if (deltaTimeMS < targetDeltaTimeMS) {
+            // we are too fast, sleep for the difference to reach target FPS
+            const sleepTimeMS = targetDeltaTimeMS - deltaTimeMS
+            //console.log(`Sleeping for ${sleepTimeMS} ms`)
+            await new Promise((resolve) => setTimeout(resolve, sleepTimeMS))
+        }
+        now = Date.now()
         const deltaTimeSec = (now - this._lastTimestamp) / 1000
-        console.log(`FPS: ${(1 / deltaTimeSec).toFixed(2)}`)
+        //console.log(`FPS: ${(1 / deltaTimeSec).toFixed(2)}`)
         this._lastTimestamp = Date.now()
 
         // update all components

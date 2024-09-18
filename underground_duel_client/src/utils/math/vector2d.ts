@@ -2,12 +2,12 @@ import { lerp } from "./lerp.ts"
 
 // Contains an X and a Y describing a vector. Used for points, indecies, velocity, etc
 export class Vector2D {
-	public x: number
-	public y: number
+	public X: number
+	public Y: number
 
 	constructor(x: number, y: number) {
-		this.x = x
-		this.y = y
+		this.X = x
+		this.Y = y
 	}
 
 	public static fromString(str: string): Vector2D {
@@ -23,27 +23,27 @@ export class Vector2D {
 	}
 
 	public static toString(a: Vector2D): string {
-		return `(${a.x},${a.y})`
+		return `(${a.X},${a.Y})`
 	}
 
 	public static lerp(start: Vector2D, end: Vector2D, t: number): Vector2D {
-		return new Vector2D(lerp(start.x, end.x, t), lerp(start.y, end.y, t))
+		return new Vector2D(lerp(start.X, end.X, t), lerp(start.Y, end.Y, t))
 	}
 
 	public static add(a: Vector2D, b: Vector2D): Vector2D {
-		return new Vector2D(a.x + b.x, a.y + b.y)
+		return new Vector2D(a.X + b.X, a.Y + b.Y)
 	}
 
 	public static subtract(a: Vector2D, b: Vector2D): Vector2D {
-		return new Vector2D(a.x - b.x, a.y - b.y)
+		return new Vector2D(a.X - b.X, a.Y - b.Y)
 	}
 
 	public static multiply(a: Vector2D, scale: number): Vector2D {
-		return new Vector2D(a.x * scale, a.y * scale)
+		return new Vector2D(a.X * scale, a.Y * scale)
 	}
 
 	public static divide(a: Vector2D, denominator: number): Vector2D {
-		return new Vector2D(a.x / denominator, a.y / denominator)
+		return new Vector2D(a.X / denominator, a.Y / denominator)
 	}
 
 	public static zero(): Vector2D {
@@ -67,14 +67,14 @@ export class Vector2D {
 	}
 
 	public static isZero(a: Vector2D): boolean {
-		return a.x == 0 && a.y == 0
+		return a.X == 0 && a.Y == 0
 	}
 
 	public static round(a: Vector2D): Vector2D {
-		return new Vector2D(Math.round(a.x), Math.round(a.y))
+		return new Vector2D(Math.round(a.X), Math.round(a.Y))
 	}
 
 	public static areEqual(a: Vector2D, b: Vector2D): boolean {
-		return a.x == b.x && a.y == b.y
+		return a.X == b.X && a.Y == b.Y
 	}
 }

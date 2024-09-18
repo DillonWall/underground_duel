@@ -23,8 +23,8 @@ export class Canvas implements IAwake {
 
 	public awake(): void {
 		const canvas = document.createElement("canvas")
-		canvas.setAttribute("width", `${this.size.x}px`)
-		canvas.setAttribute("height", `${this.size.y}px`)
+		canvas.setAttribute("width", `${this.size.X}px`)
+		canvas.setAttribute("height", `${this.size.Y}px`)
 		canvas.setAttribute("tabindex", "0")
 
 		document.body.appendChild(canvas)
@@ -66,16 +66,16 @@ export class Canvas implements IAwake {
 	public fillRect(start: Vector2D, size: Vector2D, color: Color): void {
 		this._ctx!.beginPath()
 		this._ctx!.fillStyle = color.toString()
-		this._ctx!.rect(start.x, start.y, size.x, size.y)
+		this._ctx!.rect(start.X, start.Y, size.X, size.Y)
 		this._ctx!.fill()
 	}
 
 	public clearRect(start: Vector2D, size: Vector2D): void {
-		this._ctx!.clearRect(start.x, start.y, size.x, size.y)
+		this._ctx!.clearRect(start.X, start.Y, size.X, size.Y)
 	}
 
 	public clearScreen(): void {
-		this._ctx!.clearRect(0, 0, this.size.x, this.size.y)
+		this._ctx!.clearRect(0, 0, this.size.X, this.size.Y)
 	}
 
 	public calcLocalPointFrom(globalPoint: Vector2D): Vector2D | null {
@@ -88,8 +88,8 @@ export class Canvas implements IAwake {
 			left: canvasRect.left + scrollLeft,
 		}
 
-		const x = globalPoint.x - offset.left
-		const y = globalPoint.y - offset.top
+		const x = globalPoint.X - offset.left
+		const y = globalPoint.Y - offset.top
 
 		if (x < 0 || y < 0) {
 			return null
@@ -112,7 +112,7 @@ export class Canvas implements IAwake {
 		position = Vector2D.multiply(position, Settings.video.scale)
 		this._ctx!.font = `${fontSize}px ${font}`
 		this._ctx!.fillStyle = color.toString()
-		this._ctx!.fillText(text, position.x, position.y)
+		this._ctx!.fillText(text, position.X, position.Y)
 	}
 
 	public drawImage(
@@ -129,10 +129,10 @@ export class Canvas implements IAwake {
 		dSize = Vector2D.multiply(dSize, Settings.video.scale)
 		if (flip) {
 			this._ctx!.scale(-1, 1)
-			this._ctx!.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, -dLoc.x - dSize.x, dLoc.y, dSize.x, dSize.y)
+			this._ctx!.drawImage(image, sLoc.X, sLoc.Y, sSize.X, sSize.Y, -dLoc.X - dSize.X, dLoc.Y, dSize.X, dSize.Y)
 			this._ctx!.setTransform(1, 0, 0, 1, 0, 0)
 		} else {
-			this._ctx!.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, dLoc.x, dLoc.y, dSize.x, dSize.y)
+			this._ctx!.drawImage(image, sLoc.X, sLoc.Y, sSize.X, sSize.Y, dLoc.X, dLoc.Y, dSize.X, dSize.Y)
 		}
 	}
 
@@ -148,15 +148,15 @@ export class Canvas implements IAwake {
 
 		dSize = Vector2D.multiply(dSize, Settings.video.scale)
 		const dLoc = new Vector2D(
-			Settings.canvas.canvasWidth / 2 - dSize.x / 2,
-			Settings.canvas.canvasHeight / 2 - dSize.y / 2
+			Settings.canvas.canvasWidth / 2 - dSize.X / 2,
+			Settings.canvas.canvasHeight / 2 - dSize.Y / 2
 		)
 		if (flip) {
 			this._ctx!.scale(-1, 1)
-			this._ctx!.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, -dLoc.x - dSize.x, dLoc.y, dSize.x, dSize.y)
+			this._ctx!.drawImage(image, sLoc.X, sLoc.Y, sSize.X, sSize.Y, -dLoc.X - dSize.X, dLoc.Y, dSize.X, dSize.Y)
 			this._ctx!.setTransform(1, 0, 0, 1, 0, 0)
 		} else {
-			this._ctx!.drawImage(image, sLoc.x, sLoc.y, sSize.x, sSize.y, dLoc.x, dLoc.y, dSize.x, dSize.y)
+			this._ctx!.drawImage(image, sLoc.X, sLoc.Y, sSize.X, sSize.Y, dLoc.X, dLoc.Y, dSize.X, dSize.Y)
 		}
 	}
 }

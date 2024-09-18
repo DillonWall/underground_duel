@@ -22,8 +22,8 @@ export class Player extends Character {
         if (this.movement_c.velocity != 0 && !Vector2D.areEqual(this.movement_c.direction, this.movement_c.prevDirection)) {
             const moveData = {
                 MsgType: "move",
-                X: this.area_c.loc.x,
-                Y: this.area_c.loc.y,
+                X: this.area_c.loc.X,
+                Y: this.area_c.loc.Y,
             }
             this._webSocket.send(JSON.stringify(moveData))
         }

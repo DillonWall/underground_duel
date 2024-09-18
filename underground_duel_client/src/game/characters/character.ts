@@ -51,30 +51,30 @@ export class Character extends Sprite {
 			}
 		}
 		if (this.movement_c.velocity > 0) {
-			if (dir.y == 1) {
+			if (dir.Y == 1) {
 				this.setAnimation(CharacterAnimationList.MoveDown)
 				this.draw_c.flip = false
-			} else if (dir.y == -1) {
+			} else if (dir.Y == -1) {
 				this.setAnimation(CharacterAnimationList.MoveUp)
 				this.draw_c.flip = false
-			} else if (dir.x == 1) {
+			} else if (dir.X == 1) {
 				this.setAnimation(CharacterAnimationList.MoveRight)
 				this.draw_c.flip = false
-			} else if (dir.x == -1) {
+			} else if (dir.X == -1) {
 				this.setAnimation(CharacterAnimationList.MoveRight)
 				this.draw_c.flip = true
 			}
 		} else {
-			if (dir.y == 1) {
+			if (dir.Y == 1) {
 				this.setAnimation(CharacterAnimationList.IdleDown)
 				this.draw_c.flip = false
-			} else if (dir.y == -1) {
+			} else if (dir.Y == -1) {
 				this.setAnimation(CharacterAnimationList.IdleUp)
 				this.draw_c.flip = false
-			} else if (dir.x == 1) {
+			} else if (dir.X == 1) {
 				this.setAnimation(CharacterAnimationList.IdleRight)
 				this.draw_c.flip = false
-			} else if (dir.x == -1) {
+			} else if (dir.X == -1) {
 				this.setAnimation(CharacterAnimationList.IdleRight)
 				this.draw_c.flip = true
 			}

@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -16,11 +18,14 @@ var upgrader = websocket.Upgrader{
 		return true
 	},
 }
+var lastPlayerId uint16 = 0
+var players = map[uint16]*Player{}
 
 func main() {
 	fmt.Println("Hello World")
 	setupLove()
 	setupRoutes()
+	go gameLoop()
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -39,6 +44,52 @@ func setupRoutes() {
 	http.HandleFunc("/ws", wsEndpoint)
 }
 
+func gameLoop() {
+	lastTick := time.Now()
+	targetDT := time.Duration(time.Second / 20) // target 20 TPS
+	for {
+		go tick()
+
+		// Sleep if too fast
+		now := time.Now()
+		dt := now.Sub(lastTick)
+		if dt < targetDT {
+			time.Sleep(time.Duration(targetDT.Nanoseconds() - dt.Nanoseconds()))
+		}
+		log.Println("TPS: ", 1/time.Now().Sub(lastTick).Seconds())
+		lastTick = time.Now()
+	}
+}
+
+func tick() {
+	tickInfo := TickInfo{}
+	tickInfo.PlayerDatas = *asPlayerData(&players)
+	for _, player := range players {
+		player.ws.WriteJSON(tickInfo)
+	}
+}
+
+type TickInfo struct {
+	PlayerDatas map[uint16]PlayerData
+}
+
+type PlayerData struct {
+	Loc Vec2D
+}
+
+type Vec2D struct {
+	X int32
+	Y int32
+}
+
+func asPlayerData(players *map[uint16]*Player) *map[uint16]PlayerData {
+	playerDatas := map[uint16]PlayerData{}
+	for playerId, player := range *players {
+		playerDatas[playerId] = PlayerData{Vec2D{player.X, player.Y}}
+	}
+	return &playerDatas
+}
+
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Home HTTP")
 }
@@ -46,34 +97,52 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	// upgrade HTTP conn to WebSocket
 	ws, err := upgrader.Upgrade(w, r, nil)
-    defer ws.Close()
-	if err != nil {
-		log.Println(err)
-	}
-	log.Println("Client connected!")
-	err = ws.WriteMessage(websocket.TextMessage, []byte("Hi client!"))
+	defer ws.Close()
 	if err != nil {
 		log.Println(err)
 	}
 
-	reader(ws)
+	// Create player and assign player id
+	player := new(Player)
+	player.ws = ws
+	if lastPlayerId > math.MaxUint16 {
+		lastPlayerId = 0
+	} else {
+		lastPlayerId++
+	}
+	players[lastPlayerId] = player
+	defer delete(players, lastPlayerId)
+
+	log.Println("Client connected!")
+	err = ws.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf(`{PlayerID:"%d"}`, lastPlayerId)))
+	if err != nil {
+		log.Println(err)
+	}
+
+	reader(ws, lastPlayerId)
+}
+
+type Player struct {
+	ws *websocket.Conn
+	X  int32
+	Y  int32
 }
 
 // Listen forever for new messages
-func reader(conn *websocket.Conn) {
+func reader(conn *websocket.Conn, playerId uint16) {
 	for {
 		// Read in a message
-        _, p, err := conn.ReadMessage()
+		_, p, err := conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
 			return
 		}
 
-		go handleMessage(p, conn)
+		go handleMessage(p, conn, playerId)
 	}
 }
 
-func handleMessage(msg []byte, conn *websocket.Conn) {
+func handleMessage(msg []byte, conn *websocket.Conn, playerId uint16) {
 	var jsonObject SocketMessage
 	err := json.Unmarshal(msg, &jsonObject)
 	if err != nil {
@@ -83,13 +152,15 @@ func handleMessage(msg []byte, conn *websocket.Conn) {
 
 	switch msgType := jsonObject.MsgType; msgType {
 	case "move":
-        var moveData MoveData
-        err := json.Unmarshal(msg, &moveData)
-        if err != nil {
-            log.Println(err)
-            return
-        }
-        log.Println(moveData.X, moveData.Y)
+		var moveData MoveData
+		err := json.Unmarshal(msg, &moveData)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		players[playerId].X = moveData.X
+		players[playerId].Y = moveData.Y
+		// log.Println(players[playerId].X, players[playerId].Y)
 	default:
 		// Log and parrot the message we just read in
 		log.Println(msgType)
@@ -107,5 +178,5 @@ type SocketMessage struct {
 
 type MoveData struct {
 	X int32
-    Y int32
+	Y int32
 }

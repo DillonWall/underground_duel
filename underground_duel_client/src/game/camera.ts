@@ -22,8 +22,8 @@ export class Camera {
 	}
 
 	private static setLocationFromTarget() {
-		const x = this._target.loc.x - Settings.canvas.canvasWidth / Settings.video.scale
-		const y = this._target.loc.y - Settings.canvas.canvasHeight / Settings.video.scale
+		const x = this._target.loc.X - Settings.canvas.canvasWidth / Settings.video.scale
+		const y = this._target.loc.Y - Settings.canvas.canvasHeight / Settings.video.scale
 		this._location = new Vector2D(x, y)
 	}
 
