@@ -7,7 +7,7 @@ export const Settings = Object.freeze({
 		showGrid: false,
 	},
 	video: {
-		targetFps: 60,
+		fpsCap: 60,
 		fullscreen: false,
 		scale: 3,
 	},

@@ -11,6 +11,7 @@ import { Player } from "./characters/player.ts"
 import { Vector2D } from "../utils/math/vector2d.ts"
 import { parseTilemapFile } from "../utils/parsers/tilemap_parser.ts"
 import { parseSpriteFile } from "../utils/parsers/sprite_parser.ts"
+import { Settings } from "../settings/settings.ts"
 
 export class Game extends Entity {
     private _lastTimestamp = 0
@@ -59,18 +60,18 @@ export class Game extends Entity {
         if (this._webSocket == null)
             throw Error("Could not create WebSocket")
 
-    	this._webSocket.onopen = () => {
-    		console.log("Opening socket! Sending a message to server...")
-            this._webSocket!.send(JSON.stringify({MsgType:"Hi server!"}))
-    	}
+        this._webSocket.onopen = () => {
+            console.log("Opening socket! Sending a message to server...")
+            this._webSocket!.send(JSON.stringify({ MsgType: "Hi server!" }))
+        }
 
         this._webSocket.onmessage = (event) => {
             console.log("Received message: ", event.data)
         }
 
-    	this._webSocket.onclose = (event) => {
-    		console.log("Closing socket, event: ", event)
-    	}
+        this._webSocket.onclose = (event) => {
+            console.log("Closing socket, event: ", event)
+        }
 
         this._webSocket.onerror = (event) => {
             console.log("Socket error: ", event)
@@ -104,25 +105,32 @@ export class Game extends Entity {
         })
     }
 
-    public update(): void {
-        CanvasLayerManager.clearAllCanvases()
-
+    public async update(): Promise<void> {
         // FPS calculations
-        const now = Date.now()
-        const deltaTime = (now - this._lastTimestamp) / 1000 // In seconds
-        //const fps = 1 / deltaTime
-        // console.log(`FPS: ${fps.toFixed(2)}`)
-        this._lastTimestamp = now
+        let now = Date.now()
+        //const deltaTimeMS = now - this._lastTimestamp
+        //const targetDeltaTimeMS = (1 / Settings.video.fpsCap) * 1000
+        //if (deltaTimeMS < targetDeltaTimeMS) {
+        //    // we are too fast, sleep for the difference to reach target FPS
+        //    //const sleepTimeMS = targetDeltaTimeMS - deltaTimeMS
+        //    //console.log(`Sleeping for ${sleepTimeMS} ms`)
+        //    //await new Promise((resolve) => setTimeout(resolve, 0.01))
+        //}
+        //now = Date.now()
+        const deltaTimeSec = (now - this._lastTimestamp) / 1000
+        console.log(`FPS: ${(1 / deltaTimeSec).toFixed(2)}`)
+        this._lastTimestamp = Date.now()
 
         // update all components
-        super.update(deltaTime)
+        super.update(deltaTimeSec)
 
         // update all children
         for (const entity of this._entities) {
-            entity.update(deltaTime)
+            entity.update(deltaTimeSec)
         }
 
         // draw after everything is updated
+        CanvasLayerManager.clearAllCanvases()
         this.draw()
 
         // // Test Lag
