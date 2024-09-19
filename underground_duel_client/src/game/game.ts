@@ -16,9 +16,10 @@ import { OtherPlayer } from "./characters/otherplayer.ts"
 
 export class Game extends Entity {
     private _lastTimestamp = 0
+    private _otherPlayers: Map<string, OtherPlayer> = new Map<string, OtherPlayer>()
     private _entities: Entity[] = []
     private _webSocket: WebSocket | null = null
-    private _playerId: number
+    private _playerId: string = ""
 
     public get entities(): Entity[] {
         return this._entities
@@ -36,7 +37,7 @@ export class Game extends Entity {
             ])
 
         this.setupTiles(tilemapModel)
-        this.setupWebSocket()
+        this.setupWebSocket(playerSpriteSheetModel)
         this.setupPlayer(playerSpriteSheetModel)
     }
 
@@ -57,14 +58,14 @@ export class Game extends Entity {
         this._entities.push(tilemap)
     }
 
-    private setupWebSocket(otherPlayerSpriteSheet: SpriteSheet) {
+    private setupWebSocket(otherPlayerSpriteSheetModel: SpriteSheetModel) {
         this._webSocket = new WebSocket("ws://localhost:8080/ws")
         if (this._webSocket == null)
             throw Error("Could not create WebSocket")
 
         this._webSocket.onopen = () => {
             console.log("Opening socket! Sending a message to server...")
-            this._webSocket!.send(JSON.stringify({ MsgType: "Hi server!" }))
+            //this._webSocket!.send(JSON.stringify({ MsgType: "Hi server!" }))
         }
 
         this._webSocket.onmessage = (event) => {
@@ -73,12 +74,23 @@ export class Game extends Entity {
             if (dataObj.PlayerId != undefined) {
                 this._playerId = dataObj.PlayerId
             } else {
-                // dataObj is a TickInfo object
-                for (let [playerId, playerData] of dataObj.PlayerDatas) {
-                    if (!otherPlayers.has(playerId)) {
-                        otherPlayers[playerId] = new OtherPlayer(parseSpriteFile("player"), playerData)
+                // we can assume dataObj is a TickInfo object
+                const playerDatas = new Map(Object.entries(dataObj.PlayerDatas))
+                for (const [playerId, playerData] of playerDatas) {
+                    if (playerId == this._playerId.toString()) {
+                        continue
+                    }
+                    if (!this._otherPlayers.has(playerId)) {
+                        const newPlayer = new OtherPlayer(new SpriteSheet(otherPlayerSpriteSheetModel), playerData)
+                        this._otherPlayers.set(playerId, newPlayer)
                     } else {
-                        otherPlayers[playerId].updateData(playerData)
+                        this._otherPlayers.get(playerId)!.updateData(playerData)
+                    }
+                }
+                // remove players that no longer exist
+                for (const [playerId, _] of this._otherPlayers) {
+                    if (!playerDatas.has(playerId)) {
+                        this._otherPlayers.delete(playerId)
                     }
                 }
             }
@@ -97,7 +109,7 @@ export class Game extends Entity {
         if (this._webSocket == null) {
             throw Error("WebSocket must be setup before setting up player")
         }
-        const player = new Player(new SpriteSheet(playerSpriteSheetModel), new Vector2D(100, 100), this._webSocket)
+        const player = new Player(new SpriteSheet(playerSpriteSheetModel), new Vector2D(0, 0), this._webSocket)
         player.awake()
         this._entities.push(player)
     }
@@ -108,6 +120,9 @@ export class Game extends Entity {
         // awake all children
         for (const entity of this._entities) {
             entity.awake()
+        }
+        for (const [_, otherPlayer] of this._otherPlayers) {
+            otherPlayer.awake()
         }
 
         // Make sure Update starts after all entities are awaken
@@ -143,6 +158,9 @@ export class Game extends Entity {
         for (const entity of this._entities) {
             entity.update(deltaTimeSec)
         }
+        for (const [_, otherPlayer] of this._otherPlayers) {
+            otherPlayer.update(deltaTimeSec)
+        }
 
         // draw after everything is updated
         CanvasLayerManager.clearAllCanvases()
@@ -159,6 +177,9 @@ export class Game extends Entity {
         // update all children
         for (const entity of this._entities) {
             entity.draw()
+        }
+        for (const [_, otherPlayer] of this._otherPlayers) {
+            otherPlayer.draw()
         }
     }
 }

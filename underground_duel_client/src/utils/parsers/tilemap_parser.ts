@@ -7,9 +7,6 @@ import { TilemapModel } from "../../models/tilemap/tilemap_model.ts"
 import { Settings } from "../../settings/settings.ts"
 
 export async function parseTilemapFile(fileName: string): Promise<TilemapModel> {
-	const tempShiftY = -150
-	const tempShiftX = -50
-
 	let tilesets: TilesetModel[] = []
 	let tileLayers: (TileModel | null)[][][] = []
 
@@ -53,7 +50,7 @@ export async function parseTilemapFile(fileName: string): Promise<TilemapModel> 
 				}
 				row.push(
 					new TileModel(
-						new Vector2D(x * Settings.tile.tileSize + tempShiftX, y * Settings.tile.tileSize + tempShiftY),
+						new Vector2D(x * Settings.tile.tileSize, y * Settings.tile.tileSize),
 						new Vector2D(Settings.tile.tileSize, Settings.tile.tileSize),
 						new Vector2D(x, y),
 						imageIndex,

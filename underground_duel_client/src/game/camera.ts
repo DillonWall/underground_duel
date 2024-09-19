@@ -22,8 +22,12 @@ export class Camera {
 	}
 
 	private static setLocationFromTarget() {
-		const x = this._target.loc.X - Settings.canvas.canvasWidth / Settings.video.scale
-		const y = this._target.loc.Y - Settings.canvas.canvasHeight / Settings.video.scale
+        const halfScreenWidth = Settings.canvas.canvasWidth / (2 * Settings.video.scale)
+        const halfScreenHeight = Settings.canvas.canvasHeight / (2 * Settings.video.scale)
+        const halfTargetWidth = this._target.size.X / 2
+        const halfTargetHeight = this._target.size.Y / 2
+		const x = this._target.loc.X + halfTargetWidth - halfScreenWidth
+		const y = this._target.loc.Y + halfTargetHeight - halfScreenHeight
 		this._location = new Vector2D(x, y)
 	}
 

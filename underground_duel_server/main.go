@@ -114,7 +114,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	defer delete(players, lastPlayerId)
 
 	log.Println("Client connected!")
-	err = ws.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf(`{PlayerID:"%d"}`, lastPlayerId)))
+	err = ws.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf(`{"PlayerId":"%d"}`, lastPlayerId)))
 	if err != nil {
 		log.Println(err)
 	}

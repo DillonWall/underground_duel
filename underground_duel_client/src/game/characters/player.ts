@@ -9,7 +9,7 @@ export class Player extends Character {
     private _webSocket: WebSocket
 
 	constructor(playerSpriteSheet: SpriteSheet, loc: Vector2D, webSocket: WebSocket) {
-		super(playerSpriteSheet, loc, Settings.player.moveSpeed, Settings.canvas.playerLayer, true)
+		super(playerSpriteSheet, loc, Settings.player.moveSpeed, Settings.canvas.playerLayer, false)
 
         this._webSocket = webSocket
 		this.addComponent(new PlayerKeyPressComponent(this))
