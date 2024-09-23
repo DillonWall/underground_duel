@@ -6,9 +6,11 @@ import (
 	"log"
 	"math"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/websocket"
+    "github.com/joho/godotenv"
 )
 
 var upgrader = websocket.Upgrader{
@@ -22,11 +24,18 @@ var lastPlayerId uint16 = 0
 var players = map[uint16]*Player{}
 
 func main() {
-	fmt.Println("Hello World")
+    setupEnvFile()
 	setupLove()
 	setupRoutes()
 	go gameLoop()
-	log.Fatal(http.ListenAndServe(":7500", nil))
+	log.Fatal(http.ListenAndServeTLS(os.Getenv("SERVER_ADDR"), os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE"), nil))
+}
+
+func setupEnvFile() {
+    err := godotenv.Load(".env")
+    if err != nil {
+        log.Fatalf("Error loading .env file: %s", err)
+    }
 }
 
 func setupLove() {
@@ -41,7 +50,7 @@ func setupLove() {
 
 func setupRoutes() {
 	http.HandleFunc("/", homePage)
-	http.HandleFunc("/ws", wsEndpoint)
+	http.HandleFunc("/wss", wsEndpoint)
 }
 
 func gameLoop() {
