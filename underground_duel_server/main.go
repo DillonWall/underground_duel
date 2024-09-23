@@ -50,6 +50,11 @@ func setupLove() {
 
 func setupRoutes() {
 	http.HandleFunc("/", wsEndpoint)
+	http.HandleFunc("/test/", testEndpoint)
+}
+
+func testEndpoint(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Test HTTP")
 }
 
 func gameLoop() {
