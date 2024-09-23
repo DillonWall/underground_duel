@@ -1,2 +1,6 @@
 *.tiled-session
-.env
+*.env
+*.crt
+*.pem
+*.key
+*.csr

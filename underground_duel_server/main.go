@@ -49,8 +49,7 @@ func setupLove() {
 }
 
 func setupRoutes() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/wss", wsEndpoint)
+	http.HandleFunc("/", wsEndpoint)
 }
 
 func gameLoop() {
@@ -97,10 +96,6 @@ func asPlayerData(players *map[uint16]*Player) *map[uint16]PlayerData {
 		playerDatas[playerId] = PlayerData{Vec2D{player.X, player.Y}}
 	}
 	return &playerDatas
-}
-
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Home HTTP")
 }
 
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
