@@ -59,7 +59,7 @@ export class Game extends Entity {
     }
 
     private setupWebSocket(otherPlayerSpriteSheetModel: SpriteSheetModel) {
-        this._webSocket = new WebSocket("ws://localhost:8080/ws")
+        this._webSocket = new WebSocket("wss://"+import.meta.env.VITE_SERVER_WEBSOCKET_URL)
         if (this._webSocket == null)
             throw Error("Could not create WebSocket")
 
