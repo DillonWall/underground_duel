@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/gorilla/handlers"
     "github.com/joho/godotenv"
 )
 
@@ -28,7 +29,7 @@ func main() {
 	setupLove()
 	setupRoutes()
 	go gameLoop()
-	log.Fatal(http.ListenAndServeTLS(os.Getenv("SERVER_ADDR"), os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE"), nil))
+	log.Fatal(http.ListenAndServeTLS(os.Getenv("SERVER_ADDR"), os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE"), handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
 }
 
 func setupEnvFile() {
@@ -50,11 +51,6 @@ func setupLove() {
 
 func setupRoutes() {
 	http.HandleFunc("/", wsEndpoint)
-	http.HandleFunc("/test/", testEndpoint)
-}
-
-func testEndpoint(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Test HTTP")
 }
 
 func gameLoop() {
@@ -69,7 +65,7 @@ func gameLoop() {
 		if dt < targetDT {
 			time.Sleep(time.Duration(targetDT.Nanoseconds() - dt.Nanoseconds()))
 		}
-		log.Println("TPS: ", 1/time.Now().Sub(lastTick).Seconds())
+		// log.Println("TPS: ", 1/time.Now().Sub(lastTick).Seconds())
 		lastTick = time.Now()
 	}
 }
