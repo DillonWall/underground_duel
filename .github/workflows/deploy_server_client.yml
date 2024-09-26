@@ -18,7 +18,7 @@ jobs:
             go build .
             sudo service undergroundduel restart
   run_ssh_commands_client:
-    depends-on: run_ssh_commands_server
+    needs: run_ssh_commands_server
     runs-on: self-hosted
     steps:
       - name: Update repo on home server and build
