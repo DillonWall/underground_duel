@@ -1,0 +1,27 @@
+name: Build and deploy server and client to self-hosted machine
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run_ssh_commands_server:
+    runs-on: self-hosted
+    steps:
+      - name: Update repo on home server and build
+        run: |
+            cd ~/underground_duel/underground_duel_server
+            git fetch --all
+            git reset --hard origin/main
+            go build .
+            sudo service undergroundduel restart
+  run_ssh_commands_client:
+    depends-on: run_ssh_commands_server
+    runs-on: self-hosted
+    steps:
+      - name: Update repo on home server and build
+        run: |
+            cd ~/underground_duel/underground_duel_client
+            npm run build
