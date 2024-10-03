@@ -65,7 +65,6 @@ export class Game extends Entity {
 
         this._webSocket.onopen = () => {
             console.log("Opening socket! Sending a message to server...")
-            //this._webSocket!.send(JSON.stringify({ MsgType: "Hi server!" }))
         }
 
         this._webSocket.onmessage = (event) => {

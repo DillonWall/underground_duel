@@ -71,6 +71,7 @@ func gameLoop() {
 }
 
 func tick() {
+
 	tickInfo := TickInfo{}
 	tickInfo.PlayerDatas = *asPlayerData(&players)
 	for _, player := range players {
@@ -79,11 +80,21 @@ func tick() {
 }
 
 type TickInfo struct {
-	PlayerDatas map[uint16]PlayerData
+    PlayerDatas map[uint16]PlayerData
 }
 
 type PlayerData struct {
-	Loc Vec2D
+    MoveData
+}
+
+type Player struct {
+    ws *websocket.Conn
+    PlayerData
+}
+
+type MoveData struct {
+    Loc Vec2D
+    Dir Vec2D
 }
 
 type Vec2D struct {
@@ -91,10 +102,14 @@ type Vec2D struct {
 	Y int32
 }
 
+type SocketMessage struct {
+    MsgType string
+}
+
 func asPlayerData(players *map[uint16]*Player) *map[uint16]PlayerData {
 	playerDatas := map[uint16]PlayerData{}
 	for playerId, player := range *players {
-		playerDatas[playerId] = PlayerData{Vec2D{player.X, player.Y}}
+		playerDatas[playerId] = PlayerData{player.MoveData}
 	}
 	return &playerDatas
 }
@@ -127,12 +142,6 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	reader(ws, lastPlayerId)
 }
 
-type Player struct {
-	ws *websocket.Conn
-	X  int32
-	Y  int32
-}
-
 // Listen forever for new messages
 func reader(conn *websocket.Conn, playerId uint16) {
 	for {
@@ -163,9 +172,7 @@ func handleMessage(msg []byte, conn *websocket.Conn, playerId uint16) {
 			log.Println(err)
 			return
 		}
-		players[playerId].X = moveData.X
-		players[playerId].Y = moveData.Y
-		// log.Println(players[playerId].X, players[playerId].Y)
+		players[playerId].MoveData = moveData
 	default:
 		// Log and parrot the message we just read in
 		log.Println(msgType)
@@ -175,13 +182,4 @@ func handleMessage(msg []byte, conn *websocket.Conn, playerId uint16) {
 			return
 		}
 	}
-}
-
-type SocketMessage struct {
-	MsgType string
-}
-
-type MoveData struct {
-	X int32
-	Y int32
 }

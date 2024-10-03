@@ -19,11 +19,17 @@ export class Player extends Character {
 	public update(deltaTime: number): void {
 		super.update(deltaTime)
 
-        if (this.movement_c.velocity != 0 && !Vector2D.areEqual(this.movement_c.direction, this.movement_c.prevDirection)) {
+        if (!Vector2D.areEqual(this.movement_c.direction, this.movement_c.prevDirection)) {
             const moveData = {
                 MsgType: "move",
-                X: this.area_c.loc.X,
-                Y: this.area_c.loc.Y,
+                Loc: {
+                    X: this.area_c.loc.X,
+                    Y: this.area_c.loc.Y,
+                },
+                Dir: {
+                    X: this.movement_c.direction.X,
+                    Y: this.movement_c.direction.Y,
+                }
             }
             this._webSocket.send(JSON.stringify(moveData))
         }

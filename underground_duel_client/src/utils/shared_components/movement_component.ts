@@ -42,6 +42,15 @@ export class MovementComponent implements IComponent {
 		this.setAnimationBasedOnDirection.call(this.entity, this.prevDirection)
 	}
 
+    public updateMovement(direction: Vector2D): void {
+		this.prevDirection = this.direction
+        this.direction = direction
+
+		this.validateDirection()
+		this.setVelocityBasedOnDirection()
+		this.setAnimationBasedOnDirection.call(this.entity, this.prevDirection)
+    }
+
 	private setVelocityBasedOnDirection(): void {
 		if (Vector2D.isZero(this.direction)) {
 			this.velocity = 0
