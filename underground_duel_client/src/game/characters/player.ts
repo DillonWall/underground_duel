@@ -7,6 +7,7 @@ import { SpriteSheet } from "./sprite/spritesheet.ts"
 
 export class Player extends Character {
     private _webSocket: WebSocket
+    public lastTickId: number = 0
 
 	constructor(playerSpriteSheet: SpriteSheet, loc: Vector2D, webSocket: WebSocket) {
 		super(playerSpriteSheet, loc, Settings.player.moveSpeed, Settings.canvas.playerLayer, false)
@@ -19,9 +20,12 @@ export class Player extends Character {
 	public update(deltaTime: number): void {
 		super.update(deltaTime)
 
-        if (!Vector2D.areEqual(this.movement_c.direction, this.movement_c.prevDirection)) {
+        // only send data if moving or we just stopped moving
+        if (this.movement_c.velocity != 0 || !Vector2D.areEqual(this.movement_c.direction, this.movement_c.prevDirection)) {
             const moveData = {
                 MsgType: "move",
+                TickId: this.lastTickId,
+                Velocity: this.movement_c.velocity,
                 Loc: {
                     X: this.area_c.loc.X,
                     Y: this.area_c.loc.Y,

@@ -1,4 +1,4 @@
-module github.com/dillonwall/underground_duel
+module underground_duel_server
 
 go 1.18
 

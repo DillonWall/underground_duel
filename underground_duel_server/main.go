@@ -1,6 +1,8 @@
 package main
 
 import (
+    "underground_duel_server/utils"
+
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,9 +11,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/gorilla/websocket"
 	"github.com/gorilla/handlers"
-    "github.com/joho/godotenv"
+	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
 )
 
 var upgrader = websocket.Upgrader{
@@ -23,6 +25,9 @@ var upgrader = websocket.Upgrader{
 }
 var lastPlayerId uint16 = 0
 var players = map[uint16]*Player{}
+var currTickId uint16 = 0
+var avgTickDuration time.Duration = time.Duration(0)
+const TPS = 30
 
 func main() {
     setupEnvFile()
@@ -55,7 +60,12 @@ func setupRoutes() {
 
 func gameLoop() {
 	lastTick := time.Now()
-	targetDT := time.Duration(time.Second / 20) // target 20 TPS
+	targetDT := time.Duration(time.Second / TPS)
+    last3Ticks := make([]time.Duration, 3)
+    for i := range last3Ticks {
+        last3Ticks[i] = targetDT
+    }
+
 	for {
 		go tick()
 
@@ -67,19 +77,31 @@ func gameLoop() {
 		}
 		// log.Println("TPS: ", 1/time.Now().Sub(lastTick).Seconds())
 		lastTick = time.Now()
+        last3Ticks[currTickId % 3] = lastTick.Sub(now)
+        var sum int64 = 0
+        for _, t := range last3Ticks {
+            sum += t.Nanoseconds()
+        }
+        avgTickDuration = time.Duration(sum / 3)
 	}
 }
 
 func tick() {
-
 	tickInfo := TickInfo{}
+    tickInfo.TickId = incrementTick()
 	tickInfo.PlayerDatas = *asPlayerData(&players)
 	for _, player := range players {
 		player.ws.WriteJSON(tickInfo)
 	}
 }
 
+func incrementTick() uint16 {
+    currTickId++
+    return currTickId
+}
+
 type TickInfo struct {
+    TickId uint16
     PlayerDatas map[uint16]PlayerData
 }
 
@@ -93,13 +115,10 @@ type Player struct {
 }
 
 type MoveData struct {
-    Loc Vec2D
-    Dir Vec2D
-}
-
-type Vec2D struct {
-	X int32
-	Y int32
+    TickId uint16
+    Velocity uint16
+    Loc utils.Vec2D
+    Dir utils.Vec2D
 }
 
 type SocketMessage struct {
@@ -172,8 +191,10 @@ func handleMessage(msg []byte, conn *websocket.Conn, playerId uint16) {
 			log.Println(err)
 			return
 		}
+
+        moveData.addMovementPrediction()
 		players[playerId].MoveData = moveData
-	default:
+    default:
 		// Log and parrot the message we just read in
 		log.Println(msgType)
 		err = conn.WriteMessage(websocket.TextMessage, msg)
@@ -182,4 +203,22 @@ func handleMessage(msg []byte, conn *websocket.Conn, playerId uint16) {
 			return
 		}
 	}
+}
+
+func (md *MoveData) addMovementPrediction() {
+    deltaTicks := getDeltaTicks(md.TickId)
+    dTimeSec := avgTickDuration.Seconds() * float64(deltaTicks)
+
+    dLoc := md.Dir.Multiply(float64(md.Velocity) * dTimeSec)
+    newLoc := md.Loc.Add(dLoc)
+    log.Println(md.Loc, newLoc)
+    md.Loc = *newLoc
+}
+
+func getDeltaTicks(prevTickId uint16) uint16 {
+    if (prevTickId > currTickId) {
+        // tickId has wrapped back to 0
+        return math.MaxUint16 - prevTickId + currTickId
+    }
+    return currTickId - prevTickId
 }
