@@ -20,7 +20,7 @@ export class Game extends Entity {
     private _entities: Entity[] = []
     private _webSocket: WebSocket | null = null
     private _playerId: string = ""
-    private _player: Player
+    private _player: Player | null = null
 
     public get entities(): Entity[] {
         return this._entities
@@ -75,7 +75,7 @@ export class Game extends Entity {
                 this._playerId = dataObj.PlayerId
             } else {
                 // we can assume dataObj is a TickInfo object
-                this._player.lastTickId = dataObj.TickId
+                this._player!.lastTickId = dataObj.TickId
                 const playerDatas = new Map(Object.entries(dataObj.PlayerDatas))
                 for (const [playerId, playerData] of playerDatas) {
                     if (playerId == this._playerId.toString()) {

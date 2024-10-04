@@ -1,9 +1,10 @@
-import { Sprite } from "./sprite/sprite.ts"
+import { SpriteComponent } from "./sprite/sprite_component.ts"
 import { AreaComponent } from "../../utils/shared_components/area_component.ts"
 import { MovementComponent } from "../../utils/shared_components/movement_component.ts"
 import { CharacterDrawComponent } from "./components/character_draw_component.ts"
 import { Vector2D } from "../../utils/math/vector2d.ts"
 import { SpriteSheet } from "./sprite/spritesheet.ts"
+import { Entity } from "../../utils/ecs/entity.ts"
 
 enum CharacterAnimationList {
 	IdleDown = "Idle_Down",
@@ -18,9 +19,10 @@ enum CharacterAnimationList {
 	Death = "Death",
 }
 
-export class Character extends Sprite {
+export class Character extends Entity {
 	public movement_c: MovementComponent
 	public area_c: AreaComponent
+    public sprite_c: SpriteComponent
 	public draw_c: CharacterDrawComponent
 
 	constructor(
@@ -28,54 +30,54 @@ export class Character extends Sprite {
 		loc: Vector2D,
 		moveSpeed: number,
 		layer: number,
-		drawCenter: boolean = false
+        shouldLerp: boolean = false,
+		drawCenter: boolean = false,
 	) {
-		super(spriteSheet)
+		super()
 
+        this.sprite_c = new SpriteComponent(this, spriteSheet)
+        this.sprite_c.setAnimation(CharacterAnimationList.IdleDown)
 		this.area_c = new AreaComponent(this, loc, spriteSheet.imageDivider.getSubVectorSize())
-		this.movement_c = new MovementComponent(this, this.area_c, moveSpeed, this.setAnimationBasedOnDirection)
-		this.addComponent(this.area_c)
-		this.addComponent(this.movement_c)
+		this.movement_c = new MovementComponent(this, this.area_c, moveSpeed, shouldLerp, this.setAnimationBasedOnDirection)
+		this.addUpdateComponent(this.area_c)
+		this.addUpdateComponent(this.sprite_c)
+		this.addUpdateComponent(this.movement_c)
 
-		this.draw_c = new CharacterDrawComponent(this, layer, drawCenter)
+		this.draw_c = new CharacterDrawComponent(this, this.sprite_c, this.area_c, layer, drawCenter)
 		this.addDrawComponent(this.draw_c)
 	}
 
-	public setAnimationBasedOnDirection(prevDirection?: Vector2D): void {
+	public setAnimationBasedOnDirection(prevDirection: Vector2D): void {
 		let dir = this.movement_c.direction
 		if (Vector2D.isZero(dir)) {
-			if (prevDirection) {
-				dir = prevDirection
-			} else {
-				dir = new Vector2D(0, 1) // Default looking down
-			}
+            dir = prevDirection
 		}
 		if (this.movement_c.velocity > 0) {
 			if (dir.Y == 1) {
-				this.setAnimation(CharacterAnimationList.MoveDown)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveDown)
 				this.draw_c.flip = false
 			} else if (dir.Y == -1) {
-				this.setAnimation(CharacterAnimationList.MoveUp)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveUp)
 				this.draw_c.flip = false
 			} else if (dir.X == 1) {
-				this.setAnimation(CharacterAnimationList.MoveRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveRight)
 				this.draw_c.flip = false
 			} else if (dir.X == -1) {
-				this.setAnimation(CharacterAnimationList.MoveRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveRight)
 				this.draw_c.flip = true
 			}
 		} else {
-			if (dir.Y == 1) {
-				this.setAnimation(CharacterAnimationList.IdleDown)
+			if (dir.Y == 1 || (dir.X == 0 && dir.Y == 0)) {
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleDown)
 				this.draw_c.flip = false
 			} else if (dir.Y == -1) {
-				this.setAnimation(CharacterAnimationList.IdleUp)
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleUp)
 				this.draw_c.flip = false
 			} else if (dir.X == 1) {
-				this.setAnimation(CharacterAnimationList.IdleRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleRight)
 				this.draw_c.flip = false
 			} else if (dir.X == -1) {
-				this.setAnimation(CharacterAnimationList.IdleRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleRight)
 				this.draw_c.flip = true
 			}
 		}
@@ -83,7 +85,5 @@ export class Character extends Sprite {
 
 	public awake(): void {
 		super.awake()
-
-		this.setAnimation(CharacterAnimationList.IdleDown)
 	}
 }

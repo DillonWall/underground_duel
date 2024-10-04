@@ -10,10 +10,10 @@ export class Player extends Character {
     public lastTickId: number = 0
 
 	constructor(playerSpriteSheet: SpriteSheet, loc: Vector2D, webSocket: WebSocket) {
-		super(playerSpriteSheet, loc, Settings.player.moveSpeed, Settings.canvas.playerLayer, false)
+		super(playerSpriteSheet, loc, Settings.player.moveSpeed, Settings.canvas.playerLayer, false, false)
 
         this._webSocket = webSocket
-		this.addComponent(new PlayerKeyPressComponent(this))
+		this.addUpdateComponent(new PlayerKeyPressComponent(this))
 		Camera.setTarget(this.area_c)
 	}
 

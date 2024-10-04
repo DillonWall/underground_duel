@@ -33,7 +33,7 @@ export const Settings = Object.freeze({
 		block: 2,
 	},
 	player: {
-		moveSpeed: 100,
+		moveSpeed: 70,
 	},
 	hitbox: {
 		collider: "",

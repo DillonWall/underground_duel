@@ -211,7 +211,7 @@ func (md *MoveData) addMovementPrediction() {
 
     dLoc := md.Dir.Multiply(float64(md.Velocity) * dTimeSec)
     newLoc := md.Loc.Add(dLoc)
-    log.Println(md.Loc, newLoc)
+    //log.Println(md.Loc, newLoc)
     md.Loc = *newLoc
 }
 

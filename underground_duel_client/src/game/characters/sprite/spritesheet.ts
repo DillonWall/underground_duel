@@ -23,7 +23,7 @@ export class SpriteSheet extends Entity {
 			spriteSheetModel.frameCountX,
 			spriteSheetModel.frameCountY
 		)
-		this.addComponent(this.image)
-		this.addComponent(this.imageDivider)
+		this.addUpdateComponent(this.image)
+		this.addUpdateComponent(this.imageDivider)
 	}
 }

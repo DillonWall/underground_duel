@@ -5,14 +5,14 @@ import { SpriteSheet } from "./sprite/spritesheet.ts"
 
 export class OtherPlayer extends Character {
 	constructor(playerSpriteSheet: SpriteSheet, playerData: any) {
-		super(playerSpriteSheet, new Vector2D(0,0), Settings.player.moveSpeed, Settings.canvas.playerLayer, false)
+		super(playerSpriteSheet, new Vector2D(0,0), Settings.player.moveSpeed, Settings.canvas.playerLayer, true, false)
         this.updateData(playerData)
 	}
 
     public updateData(playerData: any) {
-        this.area_c.loc.X = playerData.Loc.X
-        this.area_c.loc.Y = playerData.Loc.Y
-        this.movement_c.updateMovement(new Vector2D(playerData.Dir.X, playerData.Dir.Y))
+        this.movement_c.targetLoc.X = playerData.Loc.X
+        this.movement_c.targetLoc.Y = playerData.Loc.Y
+        this.movement_c.setDirection(new Vector2D(playerData.Dir.X, playerData.Dir.Y))
     }
 
 	public update(deltaTime: number): void {

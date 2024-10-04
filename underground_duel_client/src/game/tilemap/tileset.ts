@@ -26,9 +26,9 @@ export class Tileset extends Entity {
 			tilesetModel.tileCountY
 		)
 		this.animationMap = new AnimationMapComponent<number>(this, tilesetModel.animations)
-		this.addComponent(this.image)
-		this.addComponent(this.imageDivider)
-		this.addComponent(this.animationMap)
+		this.addUpdateComponent(this.image)
+		this.addUpdateComponent(this.imageDivider)
+		this.addUpdateComponent(this.animationMap)
 	}
 
 	public awake(): void {

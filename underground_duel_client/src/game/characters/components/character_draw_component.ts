@@ -5,16 +5,21 @@ import { Color } from "../../../utils/color/color.ts"
 import { Character } from "../character.ts"
 import { Camera } from "../../camera.ts"
 import { DrawComponent } from "../../../utils/shared_components/draw_component.ts"
+import { SpriteComponent } from "../sprite/sprite_component.ts"
+import { AreaComponent } from "../../../utils/shared_components/area_component.ts"
 
 export class CharacterDrawComponent extends DrawComponent {
-	override entity: Character
+    public sprite_c: SpriteComponent
+    public area_c: AreaComponent
 	public flip: boolean = false
 	public layer: number
 	public drawCenter: boolean
 
-	constructor(entity: Character, layer: number, drawCenter: boolean) {
+	constructor(entity: Character, spriteComponent: SpriteComponent, areaComponent: AreaComponent, layer: number, drawCenter: boolean) {
 		super(entity)
         this.entity = entity
+        this.sprite_c = spriteComponent
+        this.area_c = areaComponent
 		this.layer = layer
 		this.drawCenter = drawCenter
 	}
@@ -22,7 +27,7 @@ export class CharacterDrawComponent extends DrawComponent {
 	public draw(): void {
 		super.draw()
 
-		if (!this.entity.spriteSheet.image.loaded) {
+		if (!this.sprite_c.spriteSheet.image.loaded) {
 			if (Settings.debug.enabled) {
 				console.warn("SpriteSheet image not loaded yet.")
 			}
@@ -30,27 +35,27 @@ export class CharacterDrawComponent extends DrawComponent {
 		}
 
 		try {
-            if (this.entity.currentAnimation == undefined)
+            if (this.sprite_c.currentAnimation == undefined)
                 return
-			const sLoc = this.entity.spriteSheet.imageDivider.getSubVectorLocation(
-				this.entity.currentAnimation.getCurrentFrameImageIndex()
+			const sLoc = this.sprite_c.spriteSheet.imageDivider.getSubVectorLocation(
+				this.sprite_c.currentAnimation.getCurrentFrameImageIndex()
 			)
-			const sSize = this.entity.spriteSheet.imageDivider.getSubVectorSize()
+			const sSize = this.sprite_c.spriteSheet.imageDivider.getSubVectorSize()
 			if (this.drawCenter) {
 				CanvasLayerManager.layers[this.layer].drawImageCenter(
-					this.entity.spriteSheet.image.image,
+					this.sprite_c.spriteSheet.image.image,
 					sLoc,
 					sSize,
-					this.entity.area_c.size,
+					this.area_c.size,
 					this.flip
 				)
 			} else {
 				CanvasLayerManager.layers[this.layer].drawImage(
-					this.entity.spriteSheet.image.image,
+					this.sprite_c.spriteSheet.image.image,
 					sLoc,
 					sSize,
-					Vector2D.subtract(this.entity.area_c.loc, Camera.location),
-					this.entity.area_c.size,
+					Vector2D.subtract(this.area_c.loc, Camera.location),
+					this.area_c.size,
 					this.flip
 				)
 			}
@@ -61,7 +66,7 @@ export class CharacterDrawComponent extends DrawComponent {
 
 	public drawDebugInfo(): void {
 		CanvasLayerManager.layers[Settings.canvas.numLayers - 1].drawText(
-			Vector2D.toString(this.entity.area_c.loc),
+			Vector2D.toString(this.area_c.loc),
 			new Vector2D(20, 40),
 			new Color(255, 0, 0, 1)
 		)

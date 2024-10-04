@@ -27,7 +27,7 @@ export class Tile extends Entity {
 		this.imageIndex = imageIndex
 		this.tilesetName = tilesetName
 
-		this.addComponent(this.area)
+		this.addUpdateComponent(this.area)
 		this.addDrawComponent(new TileDrawComponent(this))
 	}
 

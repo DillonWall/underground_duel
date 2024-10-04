@@ -37,7 +37,7 @@ export abstract class Entity implements IUpdate, IAwake, IDraw {
 		})
 	}
 
-	public addComponent(component: IComponent): void {
+	public addUpdateComponent(component: IComponent): void {
 		component.entity = this
 		this.components.push(component)
 	}
