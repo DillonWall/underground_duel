@@ -22,10 +22,6 @@ export class Game extends Entity {
     private _playerId: string = ""
     private _player: Player | null = null
 
-    public get entities(): Entity[] {
-        return this._entities
-    }
-
     constructor() {
         super()
     }
@@ -169,10 +165,10 @@ export class Game extends Entity {
         this.draw()
 
         // // Test Lag
-        new Promise((resolve) => setTimeout(resolve, 50)).then(() => {
-        	window.requestAnimationFrame(() => this.update())
-        })
-        // window.requestAnimationFrame(() => this.update())
+        // new Promise((resolve) => setTimeout(resolve, 50)).then(() => {
+        // 	window.requestAnimationFrame(() => this.update())
+        // })
+        window.requestAnimationFrame(() => this.update())
     }
 
     public draw(): void {
