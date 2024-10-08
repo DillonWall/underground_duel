@@ -117,8 +117,8 @@ type Player struct {
 type MoveData struct {
     TickId uint16
     Velocity uint16
-    Loc utils.Vec2D
-    Dir utils.Vec2D
+    Loc utils.Vec2D[int32]
+    Dir utils.Vec2D[int32]
 }
 
 type SocketMessage struct {
@@ -209,7 +209,7 @@ func (md *MoveData) addMovementPrediction() {
     deltaTicks := getDeltaTicks(md.TickId)
     dTimeSec := avgTickDuration.Seconds() * float64(deltaTicks)
 
-    dLoc := md.Dir.Multiply(float64(md.Velocity) * dTimeSec)
+    dLoc := md.Dir.Multiply(float64(md.Velocity) * dTimeSec).Round()
     newLoc := md.Loc.Add(dLoc)
     //log.Println(md.Loc, newLoc)
     md.Loc = *newLoc

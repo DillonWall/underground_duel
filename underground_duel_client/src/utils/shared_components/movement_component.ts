@@ -82,8 +82,9 @@ export class MovementComponent implements IComponent {
 	awake(): void {}
 	sleep(): void {}
 	update(deltaTime: number): void {
+        const normDirection = Vector2D.normalize(this.direction)
 		this.targetLoc = Vector2D.round(
-			Vector2D.add(this.targetLoc, Vector2D.multiply(this.direction, this.velocity * deltaTime))
+			Vector2D.add(this.targetLoc, Vector2D.multiply(normDirection, this.velocity * deltaTime))
 		)
         if (this.shouldLerp) {
             const lerpAmt = (this.velocity == 0) ? 0.8 : 0.4

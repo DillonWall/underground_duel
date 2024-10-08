@@ -77,4 +77,15 @@ export class Vector2D {
 	public static areEqual(a: Vector2D, b: Vector2D): boolean {
 		return a.X == b.X && a.Y == b.Y
 	}
+
+    public static magnitude(a: Vector2D): number {
+        return Math.sqrt(a.X * a.X + a.Y * a.Y)
+    }
+
+    public static normalize(a: Vector2D): Vector2D {
+        const mag = Vector2D.magnitude(a)
+        if (mag == 1)
+            return a
+        return new Vector2D(a.X / mag, a.Y / mag)
+    }
 }
