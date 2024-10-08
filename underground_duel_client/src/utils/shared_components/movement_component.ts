@@ -5,10 +5,10 @@ import { AreaComponent } from "./area_component.ts"
 
 export class MovementComponent implements IComponent {
 	public entity: Entity
-	public area: AreaComponent
+	public pixelPerfectArea_c: AreaComponent
+	public actualArea_c: AreaComponent
 	public prevDirection: Vector2D = Vector2D.zero()
 	public direction: Vector2D = Vector2D.zero()
-	public targetLoc: Vector2D = Vector2D.zero()
 	public velocity: number = 0
 	public moveSpeed: number
     public shouldLerp: boolean
@@ -16,14 +16,14 @@ export class MovementComponent implements IComponent {
 
 	constructor(
 		entity: Entity,
-		area: AreaComponent,
+		area_c: AreaComponent,
 		moveSpeed: number,
         shouldLerp: boolean,
 		setAnimationBasedOnDirection: (prevDirection: Vector2D) => void
 	) {
 		this.entity = entity
-		this.area = area
-        this.targetLoc = area.loc
+		this.pixelPerfectArea_c = area_c
+		this.actualArea_c = structuredClone(area_c)
 		this.moveSpeed = moveSpeed
         this.shouldLerp = shouldLerp
 		this.setAnimationBasedOnDirection = setAnimationBasedOnDirection
@@ -52,8 +52,19 @@ export class MovementComponent implements IComponent {
         if (Vector2D.areEqual(this.direction, this.prevDirection)) {
             return
         }
+        this.roundWhenEnteringDiagonal()
         this.setVelocityBasedOnDirection()
         this.setAnimationBasedOnDirection.call(this.entity, this.prevDirection)
+    }
+
+    private roundWhenEnteringDiagonal(): void {
+        if (!this.isDiagonal(this.prevDirection) && this.isDiagonal(this.direction)) {
+            this.actualArea_c.loc = Vector2D.round(this.actualArea_c.loc)
+        }
+    }
+
+    private isDiagonal(direction: Vector2D) {
+        return direction.X != 0 && direction.Y != 0
     }
 
 	private setVelocityBasedOnDirection(): void {
@@ -83,14 +94,16 @@ export class MovementComponent implements IComponent {
 	sleep(): void {}
 	update(deltaTime: number): void {
         const normDirection = Vector2D.normalize(this.direction)
-		this.targetLoc = Vector2D.round(
-			Vector2D.add(this.targetLoc, Vector2D.multiply(normDirection, this.velocity * deltaTime))
-		)
+		this.actualArea_c.loc = Vector2D.add(
+            this.actualArea_c.loc,
+            Vector2D.multiply(normDirection, this.velocity * deltaTime)
+        )
+        console.log(this.actualArea_c.loc)
         if (this.shouldLerp) {
             const lerpAmt = (this.velocity == 0) ? 0.8 : 0.4
-            this.area.loc = Vector2D.round(Vector2D.lerp(this.area.loc, this.targetLoc, lerpAmt))
+            this.pixelPerfectArea_c.loc = Vector2D.round(Vector2D.lerp(this.pixelPerfectArea_c.loc, this.actualArea_c.loc, lerpAmt))
         } else {
-            this.area.loc = this.targetLoc
+            this.pixelPerfectArea_c.loc = Vector2D.round(this.actualArea_c.loc)
         }
 	}
 }

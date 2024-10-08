@@ -38,7 +38,6 @@ export abstract class Entity implements IUpdate, IAwake, IDraw {
 	}
 
 	public addUpdateComponent(component: IComponent): void {
-		component.entity = this
 		this.components.push(component)
 	}
 
@@ -59,7 +58,6 @@ export abstract class Entity implements IUpdate, IAwake, IDraw {
 	}
 
 	public addDrawComponent(component: DrawComponent): void {
-		component.entity = this
 		this.drawComponents.push(component)
 	}
 

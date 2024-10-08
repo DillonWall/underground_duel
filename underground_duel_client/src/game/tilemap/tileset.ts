@@ -17,15 +17,14 @@ export class Tileset extends Entity {
 		this.name = tilesetModel.name
 
         const imgUrl: string = new URL(`../../assets/tilesets/images/${tilesetModel.name}.png`, import.meta.url).href
-		this.image = new ImageComponent(this, imgUrl)
+		this.image = new ImageComponent(imgUrl)
 		this.imageDivider = new ImageDividerComponent(
-			this,
 			Settings.tile.tileSize,
 			Settings.tile.tileSize,
 			tilesetModel.tileCountX,
 			tilesetModel.tileCountY
 		)
-		this.animationMap = new AnimationMapComponent<number>(this, tilesetModel.animations)
+		this.animationMap = new AnimationMapComponent<number>(tilesetModel.animations)
 		this.addUpdateComponent(this.image)
 		this.addUpdateComponent(this.imageDivider)
 		this.addUpdateComponent(this.animationMap)

@@ -21,7 +21,7 @@ enum CharacterAnimationList {
 
 export class Character extends Entity {
 	public movement_c: MovementComponent
-	public area_c: AreaComponent
+	public pixelPerfectArea_c: AreaComponent
     public sprite_c: SpriteComponent
 	public draw_c: CharacterDrawComponent
 
@@ -35,15 +35,15 @@ export class Character extends Entity {
 	) {
 		super()
 
-        this.sprite_c = new SpriteComponent(this, spriteSheet)
+        this.sprite_c = new SpriteComponent(spriteSheet)
         this.sprite_c.setAnimation(CharacterAnimationList.IdleDown)
-		this.area_c = new AreaComponent(this, loc, spriteSheet.imageDivider.getSubVectorSize())
-		this.movement_c = new MovementComponent(this, this.area_c, moveSpeed, shouldLerp, this.setAnimationBasedOnDirection)
-		this.addUpdateComponent(this.area_c)
+		this.pixelPerfectArea_c = new AreaComponent(loc, spriteSheet.imageDivider.getSubVectorSize())
+		this.movement_c = new MovementComponent(this, this.pixelPerfectArea_c, moveSpeed, shouldLerp, this.setAnimationBasedOnDirection)
+		this.addUpdateComponent(this.pixelPerfectArea_c)
 		this.addUpdateComponent(this.sprite_c)
 		this.addUpdateComponent(this.movement_c)
 
-		this.draw_c = new CharacterDrawComponent(this, this.sprite_c, this.area_c, layer, drawCenter)
+		this.draw_c = new CharacterDrawComponent(this.sprite_c, this.pixelPerfectArea_c, layer, drawCenter)
 		this.addDrawComponent(this.draw_c)
 	}
 

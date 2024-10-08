@@ -1,11 +1,9 @@
-import { Entity } from "../../../utils/ecs/entity.ts"
 import { SpriteSheet } from "./spritesheet.ts"
 import { Animation } from "../../../utils/animation/animation.ts"
 import { AnimationMapComponent } from "../../../utils/shared_components/animation_map_component.ts"
 import { IComponent } from "../../../utils/ecs/component.ts"
 
 export class SpriteComponent implements IComponent {
-    public entity: Entity | null
     public spriteSheet: SpriteSheet
 	public animationMap: AnimationMapComponent<string>
 	public get currentAnimation(): Animation | undefined {
@@ -14,11 +12,10 @@ export class SpriteComponent implements IComponent {
 
 	private _currentAnimationKey: string
 
-	constructor(entity: Entity, spriteSheet: SpriteSheet) {
-        this.entity = entity
+	constructor(spriteSheet: SpriteSheet) {
         this.spriteSheet = spriteSheet
 
-		this.animationMap = new AnimationMapComponent<string>(entity, spriteSheet.animations)
+		this.animationMap = new AnimationMapComponent<string>(spriteSheet.animations)
 
 		this._currentAnimationKey = this.animationMap.animations.keys().next().value! // Default to the first animation
 	}

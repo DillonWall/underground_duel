@@ -14,7 +14,7 @@ export class Player extends Character {
 
         this._webSocket = webSocket
 		this.addUpdateComponent(new PlayerKeyPressComponent(this))
-		Camera.setTarget(this.area_c)
+		Camera.setTarget(this.pixelPerfectArea_c)
 	}
 
 	public update(deltaTime: number): void {
@@ -27,8 +27,8 @@ export class Player extends Character {
                 TickId: this.lastTickId,
                 Velocity: this.movement_c.velocity,
                 Loc: {
-                    X: this.area_c.loc.X,
-                    Y: this.area_c.loc.Y,
+                    X: this.pixelPerfectArea_c.loc.X,
+                    Y: this.pixelPerfectArea_c.loc.Y,
                 },
                 Dir: {
                     X: this.movement_c.direction.X,

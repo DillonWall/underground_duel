@@ -1,14 +1,11 @@
-import { Entity } from "../ecs/entity.ts"
 import { IComponent } from "../ecs/component.ts"
 import { IDraw } from "../lifecycle/draw.ts"
 import { Settings } from "../../settings/settings.ts"
 
 export abstract class DrawComponent implements IComponent, IDraw {
-	entity: Entity
 	private _sleeping: boolean = false
 
-	constructor(entity: Entity) {
-		this.entity = entity
+	constructor() {
 	}
 
 	awake(): void {

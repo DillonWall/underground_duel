@@ -9,10 +9,10 @@ import { DrawComponent } from "../../../utils/shared_components/draw_component.t
 import { Tileset } from "../tileset.ts"
 
 export class TileDrawComponent extends DrawComponent {
-	override entity: Tile
+	entity: Tile
 
 	constructor(entity: Tile) {
-		super(entity)
+		super()
         this.entity = entity
 	}
 

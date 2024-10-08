@@ -2,7 +2,6 @@ import { Settings } from "../../../settings/settings.ts"
 import { CanvasLayerManager } from "../../../utils/canvas/canvas_layer_manager.ts"
 import { Vector2D } from "../../../utils/math/vector2d.ts"
 import { Color } from "../../../utils/color/color.ts"
-import { Character } from "../character.ts"
 import { Camera } from "../../camera.ts"
 import { DrawComponent } from "../../../utils/shared_components/draw_component.ts"
 import { SpriteComponent } from "../sprite/sprite_component.ts"
@@ -15,9 +14,8 @@ export class CharacterDrawComponent extends DrawComponent {
 	public layer: number
 	public drawCenter: boolean
 
-	constructor(entity: Character, spriteComponent: SpriteComponent, areaComponent: AreaComponent, layer: number, drawCenter: boolean) {
-		super(entity)
-        this.entity = entity
+	constructor(spriteComponent: SpriteComponent, areaComponent: AreaComponent, layer: number, drawCenter: boolean) {
+		super()
         this.sprite_c = spriteComponent
         this.area_c = areaComponent
 		this.layer = layer

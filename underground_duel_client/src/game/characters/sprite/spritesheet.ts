@@ -15,9 +15,8 @@ export class SpriteSheet extends Entity {
 		this.animations = spriteSheetModel.animations
 
         const imgUrl: string = new URL(`../../../assets/spritesheets/images/${spriteSheetModel.name}.png`, import.meta.url).href
-		this.image = new ImageComponent(this, imgUrl)
+		this.image = new ImageComponent(imgUrl)
 		this.imageDivider = new ImageDividerComponent(
-			this,
 			spriteSheetModel.frameWidth,
 			spriteSheetModel.frameHeight,
 			spriteSheetModel.frameCountX,

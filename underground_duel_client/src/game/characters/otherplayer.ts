@@ -10,8 +10,8 @@ export class OtherPlayer extends Character {
 	}
 
     public updateData(playerData: any) {
-        this.movement_c.targetLoc.X = playerData.Loc.X
-        this.movement_c.targetLoc.Y = playerData.Loc.Y
+        this.movement_c.actualArea_c.loc.X = playerData.Loc.X
+        this.movement_c.actualArea_c.loc.Y = playerData.Loc.Y
         this.movement_c.setDirection(new Vector2D(playerData.Dir.X, playerData.Dir.Y))
     }
 

@@ -1,22 +1,18 @@
 import { IComponent } from "../ecs/component.ts"
-import { Entity } from "../ecs/entity.ts"
 import { Vector2D } from "../math/vector2d.ts"
 
 export class ImageDividerComponent implements IComponent {
-	public entity: Entity
 	private _subImageWidth: number
 	private _subImageHeight: number
 	private _subImageCountX: number
 	private _subImageCountY: number
 
 	constructor(
-		entity: Entity,
 		subImageWidth: number,
 		subImageHeight: number,
 		subImageCountX: number,
 		subImageCountY: number
 	) {
-		this.entity = entity
 		this._subImageWidth = subImageWidth
 		this._subImageHeight = subImageHeight
 		this._subImageCountX = subImageCountX

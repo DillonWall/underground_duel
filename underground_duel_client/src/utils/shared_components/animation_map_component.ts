@@ -1,15 +1,11 @@
 import { IComponent } from "../ecs/component.ts"
-import { Entity } from "../ecs/entity.ts"
 import { AnimationModel } from "../../models/animation/animation_model.ts"
 import { Animation } from "../animation/animation.ts"
 
 export class AnimationMapComponent<KeyType> implements IComponent {
-	public entity: Entity
 	public animations: Map<KeyType, Animation> = new Map()
 
-	constructor(entity: Entity, animations: Array<Array<KeyType | AnimationModel>>) {
-		this.entity = entity
-
+	constructor(animations: Array<Array<KeyType | AnimationModel>>) {
 		animations.forEach((entry) => {
 			const animationName = entry[0] as KeyType
 			const animationModel = entry[1] as AnimationModel

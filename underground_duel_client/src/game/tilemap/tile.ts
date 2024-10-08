@@ -21,7 +21,7 @@ export class Tile extends Entity {
 	) {
 		super()
 
-		this.area = new AreaComponent(this, loc, size)
+		this.area = new AreaComponent(loc, size)
 		this.index = index
 		this.layer = layer
 		this.imageIndex = imageIndex
