@@ -36,7 +36,7 @@ export class CharacterDrawComponent extends DrawComponent {
             if (this.sprite_c.currentAnimation == undefined)
                 return
 			const sLoc = this.sprite_c.spriteSheet.imageDivider.getSubVectorLocation(
-				this.sprite_c.currentAnimation.getCurrentFrameImageIndex()
+				this.sprite_c.currentAnimation.getCurrentFrameImageIdx()
 			)
 			const sSize = this.sprite_c.spriteSheet.imageDivider.getSubVectorSize()
 			if (this.drawCenter) {

@@ -11,7 +11,7 @@ export class Animation extends Entity {
 	private _lengthFrames: number
 	private _lengthTime: number
 	private _elapsedTime: number
-	private _currentFrame: number
+    private _currentFrame: number
 	private _playing: boolean
 
 	constructor(animationModel: AnimationModel, resetOnAwake: boolean = true) {
@@ -26,11 +26,11 @@ export class Animation extends Entity {
 		this._lengthFrames = animationModel.delays.length
 		this._lengthTime = this._delays.reduce((total, delay) => total + delay, 0)
 		this._elapsedTime = 0
-		this._currentFrame = 0
+        this._currentFrame = 0
 		this._playing = false
 	}
 
-	private findCurrentFrameIndex(): number {
+	private findCurrentFrame(): number {
 		let totalTime = 0
 		for (let i = 0; i < this._delays.length; i++) {
 			totalTime += this._delays[i]
@@ -41,13 +41,26 @@ export class Animation extends Entity {
 		return this._lengthFrames - 1
 	}
 
-	public getFrameImageIndex(frameIndex: number): number {
+	public getFrameImageIdxFromFrame(frameIndex: number): number {
 		return this._frameImageIndecies[frameIndex]
 	}
 
-	public getCurrentFrameImageIndex(): number {
+	public getCurrentFrameImageIdx(): number {
 		return this._frameImageIndecies[this._currentFrame]
 	}
+
+    public getElapsedTime(): number {
+        return this._elapsedTime
+    }
+
+    public setElapsedTime(elapsedTime: number): void {
+        if (elapsedTime < 0 || elapsedTime >= this._lengthFrames) {
+            throw new Error("Tried to set an invalid frame index.")
+        }
+
+        this._elapsedTime = elapsedTime
+        this._currentFrame = this.findCurrentFrame()
+    }
 
 	public awake(): void {
 		super.awake()
@@ -80,6 +93,6 @@ export class Animation extends Entity {
 				this._playing = false
 			}
 		}
-		this._currentFrame = this.findCurrentFrameIndex()
+		this._currentFrame = this.findCurrentFrame()
 	}
 }

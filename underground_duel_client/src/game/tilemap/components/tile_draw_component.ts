@@ -20,7 +20,7 @@ export class TileDrawComponent extends DrawComponent {
 		// For animated tiles:
 		const animationOfIndex = tileset.animationMap.animations.get(index)
 		if (animationOfIndex) {
-			return animationOfIndex.getCurrentFrameImageIndex()
+			return animationOfIndex.getCurrentFrameImageIdx()
 		}
 		return index
 	}

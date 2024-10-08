@@ -21,9 +21,15 @@ export class SpriteComponent implements IComponent {
 	}
 
 	public setAnimation(animationKey: string): void {
-		this.currentAnimation?.sleep()
+        if (!this.currentAnimation) {
+            throw new Error("Tried to set an animation before initializing")
+        }
+
+        const elapsedTime = this.currentAnimation.getElapsedTime()
+		this.currentAnimation.sleep()
 		this._currentAnimationKey = animationKey
-		this.currentAnimation?.awake()
+		this.currentAnimation.awake()
+        this.currentAnimation.setElapsedTime(elapsedTime)
 	}
 
 	public awake(): void {
