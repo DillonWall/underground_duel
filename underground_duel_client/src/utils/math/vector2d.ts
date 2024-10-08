@@ -79,12 +79,13 @@ export class Vector2D {
 	}
 
     public static magnitude(a: Vector2D): number {
-        return Math.sqrt(a.X * a.X + a.Y * a.Y)
+        const a2b2 = a.X * a.X + a.Y * a.Y
+        return a2b2 > 0 ? Math.sqrt(a2b2) : 0
     }
 
     public static normalize(a: Vector2D): Vector2D {
         const mag = Vector2D.magnitude(a)
-        if (mag == 1)
+        if (mag == 1 || mag == 0)
             return a
         return new Vector2D(a.X / mag, a.Y / mag)
     }
