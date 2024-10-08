@@ -62,6 +62,10 @@ export class Animation extends Entity {
         this._currentFrame = this.findCurrentFrame()
     }
 
+    public isPlaying(): boolean {
+        return this._playing
+    }
+
 	public awake(): void {
 		super.awake()
 

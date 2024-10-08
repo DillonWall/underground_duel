@@ -24,6 +24,9 @@ export class Character extends Entity {
 	public pixelPerfectArea_c: AreaComponent
     public sprite_c: SpriteComponent
 	public draw_c: CharacterDrawComponent
+    // TODO: there should be some kind of state pattern here to track if we are
+    // Idle, Moving, Attacking, etc.
+    // In response to a change in state, we should change the animation accordingly
 
 	constructor(
 		spriteSheet: SpriteSheet,
@@ -48,42 +51,93 @@ export class Character extends Entity {
 	}
 
 	public setAnimationBasedOnDirection(prevDirection: Vector2D): void {
+        if (this.isAttacking()) {
+            return
+        }
+
 		let dir = this.movement_c.direction
 		if (Vector2D.isZero(dir)) {
             dir = prevDirection
 		}
 		if (this.movement_c.velocity > 0) {
 			if (dir.Y == 1) {
-				this.sprite_c.setAnimation(CharacterAnimationList.MoveDown)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveDown, true)
 				this.draw_c.flip = false
 			} else if (dir.Y == -1) {
-				this.sprite_c.setAnimation(CharacterAnimationList.MoveUp)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveUp, true)
 				this.draw_c.flip = false
 			} else if (dir.X == 1) {
-				this.sprite_c.setAnimation(CharacterAnimationList.MoveRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveRight, true)
 				this.draw_c.flip = false
 			} else if (dir.X == -1) {
-				this.sprite_c.setAnimation(CharacterAnimationList.MoveRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.MoveRight, true)
 				this.draw_c.flip = true
 			}
 		} else {
 			if (dir.Y == 1 || (dir.X == 0 && dir.Y == 0)) {
-				this.sprite_c.setAnimation(CharacterAnimationList.IdleDown)
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleDown, true)
 				this.draw_c.flip = false
 			} else if (dir.Y == -1) {
-				this.sprite_c.setAnimation(CharacterAnimationList.IdleUp)
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleUp, true)
 				this.draw_c.flip = false
 			} else if (dir.X == 1) {
-				this.sprite_c.setAnimation(CharacterAnimationList.IdleRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleRight, true)
 				this.draw_c.flip = false
 			} else if (dir.X == -1) {
-				this.sprite_c.setAnimation(CharacterAnimationList.IdleRight)
+				this.sprite_c.setAnimation(CharacterAnimationList.IdleRight, true)
 				this.draw_c.flip = true
 			}
 		}
 	}
 
+    public startAttack(): void {
+        if (this.isAttacking()) {
+            return
+        }
+
+		let dir = this.movement_c.direction
+		if (Vector2D.isZero(dir)) {
+            dir = this.movement_c.prevDirection
+		}
+        if (dir.Y == 1 || (dir.X == 0 && dir.Y == 0)) {
+            this.sprite_c.setAnimation(CharacterAnimationList.AttackDown)
+            this.draw_c.flip = false
+        } else if (dir.Y == -1) {
+            this.sprite_c.setAnimation(CharacterAnimationList.AttackUp)
+            this.draw_c.flip = false
+        } else if (dir.X == 1) {
+            this.sprite_c.setAnimation(CharacterAnimationList.AttackRight)
+            this.draw_c.flip = false
+        } else if (dir.X == -1) {
+            this.sprite_c.setAnimation(CharacterAnimationList.AttackRight)
+            this.draw_c.flip = true
+        }
+    }
+
+    private isAttacking(): boolean {
+        const key = this.sprite_c.currentAnimationKey
+        const animationIsAttack = key === CharacterAnimationList.AttackUp
+            || key === CharacterAnimationList.AttackDown
+            || key === CharacterAnimationList.AttackRight
+        const animationIsPlaying = this.sprite_c.currentAnimation!.isPlaying()
+        return animationIsAttack && animationIsPlaying
+    }
+
 	public awake(): void {
 		super.awake()
 	}
+
+    public update(deltaTime: number): void {
+        super.update(deltaTime)
+
+        // TODO: fix this with the state pattern
+        const key = this.sprite_c.currentAnimationKey
+        const animationIsAttack = key === CharacterAnimationList.AttackUp
+            || key === CharacterAnimationList.AttackDown
+            || key === CharacterAnimationList.AttackRight
+        const animationIsPlaying = this.sprite_c.currentAnimation!.isPlaying()
+        if (animationIsAttack && !animationIsPlaying) {
+            this.setAnimationBasedOnDirection(this.movement_c.prevDirection)
+        }
+    }
 }

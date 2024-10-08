@@ -4,12 +4,12 @@ import { Player } from "../player.ts"
 import { Settings } from "../../../settings/settings.ts"
 
 export class PlayerKeyPressComponent implements IComponent {
-	entity: Player
+	player: Player
 
 	private _eventListeners: Array<{ eventName: string; func: (this: Document, ev: any) => void }> = []
 
-	constructor(entity: Player) {
-		this.entity = entity
+	constructor(player: Player) {
+		this.player = player
 		this.setupEventListeners()
 	}
 
@@ -45,52 +45,52 @@ export class PlayerKeyPressComponent implements IComponent {
 		this._eventListeners.push({
 			eventName: "keydown",
 			func: this.createEventFuncKeyDown(Settings.controls.left, () => {
-				this.entity.movement_c.addDirection(Vector2D.left())
+				this.player.movement_c.addDirection(Vector2D.left())
 			}),
 		})
 		this._eventListeners.push({
 			eventName: "keyup",
 			func: this.createEventFuncKeyUp(Settings.controls.left, () => {
-				this.entity.movement_c.removeDirection(Vector2D.left())
+				this.player.movement_c.removeDirection(Vector2D.left())
 			}),
 		})
 		// Right
 		this._eventListeners.push({
 			eventName: "keydown",
 			func: this.createEventFuncKeyDown(Settings.controls.right, () => {
-				this.entity.movement_c.addDirection(Vector2D.right())
+				this.player.movement_c.addDirection(Vector2D.right())
 			}),
 		})
 		this._eventListeners.push({
 			eventName: "keyup",
 			func: this.createEventFuncKeyUp(Settings.controls.right, () => {
-				this.entity.movement_c.removeDirection(Vector2D.right())
+				this.player.movement_c.removeDirection(Vector2D.right())
 			}),
 		})
 		// Up
 		this._eventListeners.push({
 			eventName: "keydown",
 			func: this.createEventFuncKeyDown(Settings.controls.up, () => {
-				this.entity.movement_c.addDirection(Vector2D.up())
+				this.player.movement_c.addDirection(Vector2D.up())
 			}),
 		})
 		this._eventListeners.push({
 			eventName: "keyup",
 			func: this.createEventFuncKeyUp(Settings.controls.up, () => {
-				this.entity.movement_c.removeDirection(Vector2D.up())
+				this.player.movement_c.removeDirection(Vector2D.up())
 			}),
 		})
 		// Down
 		this._eventListeners.push({
 			eventName: "keydown",
 			func: this.createEventFuncKeyDown(Settings.controls.down, () => {
-				this.entity.movement_c.addDirection(Vector2D.down())
+				this.player.movement_c.addDirection(Vector2D.down())
 			}),
 		})
 		this._eventListeners.push({
 			eventName: "keyup",
 			func: this.createEventFuncKeyUp(Settings.controls.down, () => {
-				this.entity.movement_c.removeDirection(Vector2D.down())
+				this.player.movement_c.removeDirection(Vector2D.down())
 			}),
 		})
 
@@ -121,6 +121,14 @@ export class PlayerKeyPressComponent implements IComponent {
 		// 		}
 		// 	})
 		// })
+
+		// Attack
+		this._eventListeners.push({
+			eventName: "keydown",
+			func: this.createEventFuncKeyDown(Settings.controls.attack, () => {
+				this.player.startAttack()
+			}),
+		})
 	}
 
 	private registerControls(): void {
